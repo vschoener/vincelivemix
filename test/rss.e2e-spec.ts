@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('RssController (e2e)', () => {
   let app;
 
   beforeEach(async () => {
@@ -14,10 +14,10 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/rss (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/rss')
       .expect(200)
-      .expect('Hello World!');
+      .expect('my generated live mix rss');
   });
 });
