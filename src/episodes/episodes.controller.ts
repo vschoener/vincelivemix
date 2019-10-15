@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
 import { Episode } from './episode';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
@@ -18,6 +18,7 @@ export class EpisodesController {
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   createEpisode(@Body() createEpisodeDto: CreateEpisodeDto): Episode {
     return this.episodeService.createEpisode(createEpisodeDto);
   }
