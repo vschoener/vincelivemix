@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RssController } from './rss/rss.controller';
-import { RssService } from './rss/rss.service';
+import { RssModule } from './rss/rss.module';
+import { EpisodesModule } from './episodes/episodes.module';
 
 @Module({
-  imports: [],
-  controllers: [RssController],
-  providers: [RssService],
+  imports: [RssModule, EpisodesModule],
 })
 export class AppModule {}

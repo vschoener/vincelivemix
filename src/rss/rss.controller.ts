@@ -1,7 +1,7 @@
 import { Controller, Get, Header } from '@nestjs/common';
 import { RssService } from './rss.service';
 
-@Controller('rss')
+@Controller('/rss')
 export class RssController {
   public constructor(private readonly rssService: RssService) {}
 
