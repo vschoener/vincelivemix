@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateEpisodeDto {
   @IsNotEmpty()
@@ -8,5 +9,6 @@ export class CreateEpisodeDto {
   description: string;
 
   @IsNumber()
+  @Transform(value => Number(value))
   number: number;
 }
