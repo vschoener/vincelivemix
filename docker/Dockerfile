@@ -1,7 +1,8 @@
+# Dockerfile for production only
+
 # Installing stage
 FROM node:latest as installer
-ARG NODE_ENV=development
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=production
 WORKDIR /app
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
@@ -12,7 +13,7 @@ RUN npm install --quiet
 FROM node:latest as builder
 WORKDIR /app
 COPY --from=installer /app .
-COPY ./src src
+COPY ../src src
 COPY tsconfig*.json ./
 RUN npm run build
 
@@ -21,10 +22,3 @@ FROM node:latest as run
 WORKDIR /app
 COPY --from=builder /app .
 CMD [ "npm", "start" ]
-
-FROM node:latest as development
-WORKDIR /app
-COPY --from=builder /app .
-## Add the wait script to the image
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.6.0/wait /usr/local/bin/wait
-RUN chmod +x /usr/local/bin/wait

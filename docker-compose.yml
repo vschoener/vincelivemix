@@ -3,31 +3,30 @@ version: '3.7'
 services:
   app:
     container_name: ${DOCKER_CONTAINER_PREFIX}.app
-    command: npm run start:dev
+    command: sh -c "/usr/local/bin/wait && npm run start:dev"
     build:
-      context: .
-      target: builder
+      context: docker
+      dockerfile: Dockerfile.dev
     environment:
       - NODE_ENV=development
+      - WAIT_HOSTS=postgres:5432
     volumes:
-      - .:/app
-      - node_modules:/app/node_modules
+      - .:/app:cached
     ports:
       - ${APP_PORT}:${APP_PORT}
     depends_on:
       - postgres
+    env_file:
+      - .env
 
   postgres:
     container_name: ${DOCKER_CONTAINER_PREFIX}.postgres
-    image: postgres
+    image: postgres:11
     environment:
       - POSTGRES_USER=john
       - POSTGRES_PASSWORD=pwd0123456789
       - POSTGRES_DB=vincelivemix
     volumes:
-      - ./docker-volumes/postgres:/var/lib/postgresql/data
+      - ./docker/volumes/postgres:/var/lib/postgresql/data
     ports:
-      - ${POSTGRES_DB_PORT}:5432
-
-volumes:
-  node_modules:
+      - ${POSTGRES_PORT}:5432
