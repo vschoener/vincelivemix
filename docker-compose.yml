@@ -10,6 +10,7 @@ services:
     environment:
       - NODE_ENV=development
       - WAIT_HOSTS=postgres:5432
+      - TYPEORM_HOST=postgres
     volumes:
       - .:/app:cached
     ports:
