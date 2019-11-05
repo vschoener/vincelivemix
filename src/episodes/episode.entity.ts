@@ -17,4 +17,9 @@ export class Episode extends BaseEntity {
 
   @Column()
   status: EpisodeStatus;
+
+  @Column({
+    nullable: true,
+  })
+  coverImage: string;
 }

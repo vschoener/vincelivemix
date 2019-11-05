@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -32,10 +33,14 @@ export class EpisodesController {
 
   @Post('/:id/cover_image')
   @UseInterceptors(FileInterceptor('coverImage'))
-  uploadCoverImage(@Param('id') id: string, @UploadedFile() coverImage) {
-    // TODO: Upload file to the proper folder
-    // Check if episode exist
-    // Then move the image to the right folder
-    // Add image path to the entity
+  uploadCoverImage(
+    @Param('id') id: number,
+    @UploadedFile() coverImage: Express.Multer.File,
+  ) {
+    if (!coverImage) {
+      throw new BadRequestException('coverImage file is missing');
+    }
+
+    return this.episodeService.storeImage(id, coverImage);
   }
 }

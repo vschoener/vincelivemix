@@ -11,7 +11,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
   synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
   migrationsRun: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
   logging: process.env.TYPEORM_LOGGING === 'true',
-  logger: 'file',
+  logger: 'debug',
   migrations: [__dirname + '/../migrations/**/*.{ts,js}'],
   cli: {
     migrationsDir: 'src/migrations',
