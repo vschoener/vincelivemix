@@ -1,16 +1,19 @@
 import * as fs from 'fs';
 import { extname } from 'path';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
-import { EpisodeRepository } from './episode.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from './episode.entity';
+import { Repository } from 'typeorm';
+import { EpisodeStatus } from './episode.enum';
+import { DateManagerService } from '../core/date/date-manager.service';
 
 @Injectable()
 export class EpisodesService {
   constructor(
-    @InjectRepository(EpisodeRepository)
-    private readonly episodeRepository: EpisodeRepository,
+    @InjectRepository(Episode)
+    private readonly episodeRepository: Repository<Episode>,
+    @Inject(DateManagerService) private dateManagerService: DateManagerService,
   ) {}
 
   getEpisodeById(id: number): Promise<Episode> {
@@ -23,8 +26,18 @@ export class EpisodesService {
     return episode;
   }
 
-  createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
-    return this.episodeRepository.createEpisode(createEpisodeDto);
+  async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
+    const episode = new Episode();
+    episode.description = createEpisodeDto.description;
+    episode.title = createEpisodeDto.title;
+    episode.number = createEpisodeDto.number;
+    episode.status = EpisodeStatus.DRAFT;
+    episode.createdAt = this.dateManagerService.getNewDate();
+    episode.updatedAt = this.dateManagerService.getNewDate();
+
+    await episode.save();
+
+    return episode;
   }
 
   /**

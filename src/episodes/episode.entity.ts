@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { EpisodeStatus } from './episode';
+import { EpisodeStatus } from './episode.enum';
 
 @Entity()
 export class Episode extends BaseEntity {
@@ -9,7 +9,9 @@ export class Episode extends BaseEntity {
   @Column()
   title: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   number: number;
 
   @Column()
@@ -22,4 +24,14 @@ export class Episode extends BaseEntity {
     nullable: true,
   })
   coverImage: string;
+
+  @Column({
+    type: 'timestamptz',
+  })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamptz',
+  })
+  updatedAt: Date;
 }

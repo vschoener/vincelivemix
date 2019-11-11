@@ -3,9 +3,11 @@ import { RssModule } from './rss/rss.module';
 import { EpisodesModule } from './episodes/episodes.module';
 import { TypeOrmCoreModule } from '@nestjs/typeorm/dist/typeorm-core.module';
 import * as typeOrmConfig from './config/typeorm.config';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
+    CoreModule,
     TypeOrmCoreModule.forRoot(typeOrmConfig),
     RssModule,
     EpisodesModule,
