@@ -41,8 +41,11 @@ install:
 test:
 	docker-compose -f docker-compose.test.yml run --rm test                                                                                                                                                                       tech-docker-compose ✭ ◼
 
-migrate-up:
-	docker-compose run --rm app npm run db-migrate up
+migrate-create:
+	docker-compose run --rm app npm run migration:create
 
-migrate-down:
-	docker-compose run --rm app npm run db-migrate down
+migrate-generate:
+	docker-compose run --rm app npm run migration:generate
+
+migrate-run:
+	docker-compose run --rm app npm run migration:run

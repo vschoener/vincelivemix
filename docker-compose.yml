@@ -28,6 +28,9 @@ services:
       - POSTGRES_PASSWORD=pwd0123456789
       - POSTGRES_DB=vincelivemix
     volumes:
-      - ./docker/volumes/postgres:/var/lib/postgresql/data
+      - postgres_vincelivemix/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:5432
+
+volumes:
+  postgres_vincelivemix: {}

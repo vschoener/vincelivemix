@@ -1,4 +1,12 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
+
+/**
+ * Handle TypeORM CLI Case
+ */
+if (!module.parent) {
+  dotenv.config();
+}
 
 const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
