@@ -1,12 +1,19 @@
 import * as fs from 'fs';
 import { extname } from 'path';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from './episode.entity';
-import { Repository } from 'typeorm';
+import { Repository, QueryFailedError } from 'typeorm';
 import { EpisodeStatus } from './episode.enum';
 import { DateManagerService } from '../core/date/date-manager.service';
+import { EpisodeDuplicated } from './execptions/EpisodeDuplicated';
+import { EPISODE_CONSTRAINT } from './constants';
 
 @Injectable()
 export class EpisodesService {
@@ -32,10 +39,23 @@ export class EpisodesService {
     episode.title = createEpisodeDto.title;
     episode.number = createEpisodeDto.number;
     episode.status = EpisodeStatus.DRAFT;
-    episode.createdAt = this.dateManagerService.getNewDate();
+    episode.createdAt = createEpisodeDto.publishAt
+      ? createEpisodeDto.publishAt
+      : this.dateManagerService.getNewDate();
+
     episode.updatedAt = this.dateManagerService.getNewDate();
 
-    await episode.save();
+    try {
+      await episode.save();
+    } catch (err) {
+      if (err.constructor === QueryFailedError) {
+        if (err.constraint === EPISODE_CONSTRAINT) {
+          throw new EpisodeDuplicated('Episode number already exists');
+        }
+      }
+
+      throw err;
+    }
 
     return episode;
   }

@@ -1,5 +1,11 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsDate,
+  IsOptional,
+} from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
 export class CreateEpisodeDto {
   @IsString()
@@ -13,4 +19,9 @@ export class CreateEpisodeDto {
   @IsNumber()
   @Transform(value => Number(value))
   number: number;
+
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  publishAt?: Date;
 }

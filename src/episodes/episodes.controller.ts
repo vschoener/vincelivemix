@@ -15,6 +15,7 @@ import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { EpisodeDuplicated } from './execptions/EpisodeDuplicated';
 
 @Controller('episodes')
 export class EpisodesController {
@@ -27,8 +28,21 @@ export class EpisodesController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createEpisode(@Body() createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
-    return this.episodeService.createEpisode(createEpisodeDto);
+  async createEpisode(
+    @Body() createEpisodeDto: CreateEpisodeDto,
+  ): Promise<Episode> {
+    try {
+      return await this.episodeService.createEpisode(createEpisodeDto);
+    } catch (err) {
+      switch (err.constructor) {
+        case EpisodeDuplicated:
+          console.log(err);
+          throw new BadRequestException(err.message);
+          break;
+      }
+
+      throw err;
+    }
   }
 
   @Post('/:id/cover_image')

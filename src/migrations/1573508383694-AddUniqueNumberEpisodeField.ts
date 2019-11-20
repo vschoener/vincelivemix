@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
+import { EPISODE_CONSTRAINT } from '../episodes/constants';
 
 export class AddUniqueNumberEpisodeField1573508383694
   implements MigrationInterface {
@@ -6,14 +7,14 @@ export class AddUniqueNumberEpisodeField1573508383694
 
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      `ALTER TABLE "episode" ADD CONSTRAINT "UQ_7166afa4951d08d8d88a4304e65" UNIQUE ("number")`,
+      `ALTER TABLE "episode" ADD CONSTRAINT "${EPISODE_CONSTRAINT}" UNIQUE ("number")`,
       undefined,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      `ALTER TABLE "episode" DROP CONSTRAINT "UQ_7166afa4951d08d8d88a4304e65"`,
+      `ALTER TABLE "episode" DROP CONSTRAINT "${EPISODE_CONSTRAINT}"`,
       undefined,
     );
   }
