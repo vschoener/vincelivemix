@@ -4,24 +4,29 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from './episode.entity';
-import { Repository, QueryFailedError } from 'typeorm';
+import { Repository, QueryFailedError, FindManyOptions } from 'typeorm';
 import { EpisodeStatus } from './episode.enum';
 import { DateManagerService } from '../core/date/date-manager.service';
-import { EpisodeDuplicated } from './execptions/EpisodeDuplicated';
+import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
+import { Logger } from 'winston';
 
 @Injectable()
 export class EpisodesService {
+  private readonly logger: Logger;
+
   constructor(
     @InjectRepository(Episode)
     private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
-  ) {}
+    @Inject('winston') logger: Logger
+  ) {
+    this.logger = logger.child({ context: EpisodesService.name } )
+  }
 
   getEpisodeById(id: number): Promise<Episode> {
     const episode = this.episodeRepository.findOne(id);
@@ -34,22 +39,25 @@ export class EpisodesService {
   }
 
   async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
+    this.logger.info('Creating episode...', createEpisodeDto);
+
     const episode = new Episode();
     episode.description = createEpisodeDto.description;
     episode.title = createEpisodeDto.title;
     episode.number = createEpisodeDto.number;
     episode.status = EpisodeStatus.DRAFT;
-    episode.createdAt = createEpisodeDto.publishAt
-      ? createEpisodeDto.publishAt
-      : this.dateManagerService.getNewDate();
-
+    episode.createdAt = this.dateManagerService.getNewDate();
     episode.updatedAt = this.dateManagerService.getNewDate();
+    episode.publishedAt = createEpisodeDto.publishedAt ?? episode.createdAt;
 
     try {
       await episode.save();
     } catch (err) {
       if (err.constructor === QueryFailedError) {
         if (err.constraint === EPISODE_CONSTRAINT) {
+          this.logger.error('Episode already exists', {
+            number: episode.number
+          });
           throw new EpisodeDuplicated('Episode number already exists');
         }
       }
@@ -89,5 +97,9 @@ export class EpisodesService {
     await episode.save();
 
     return { coverImage: episode.coverImage };
+  }
+
+  public getEpisodes(findManyOptions?: FindManyOptions): Promise<Episode[]> {
+    return this.episodeRepository.find(findManyOptions);
   }
 }

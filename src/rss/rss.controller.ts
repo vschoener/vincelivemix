@@ -1,5 +1,6 @@
 import { Controller, Get, Header } from '@nestjs/common';
 import { RssService } from './rss.service';
+import { XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 
 @Controller('/rss')
 export class RssController {
@@ -7,7 +8,7 @@ export class RssController {
 
   @Get()
   @Header('Cache-Control', 'none')
-  public get(): string {
+  public get(): Promise<XMLSerializedValue> {
     return this.rssService.generate();
   }
 }

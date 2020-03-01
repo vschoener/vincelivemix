@@ -15,11 +15,13 @@ import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { EpisodeDuplicated } from './execptions/EpisodeDuplicated';
+import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 
 @Controller('episodes')
 export class EpisodesController {
-  constructor(private episodeService: EpisodesService) {}
+  constructor(
+    private episodeService: EpisodesService,
+  ) {}
 
   @Get('/:id')
   getEpisodeById(@Param('id', ParseIntPipe) id: number): Promise<Episode> {
@@ -36,7 +38,6 @@ export class EpisodesController {
     } catch (err) {
       switch (err.constructor) {
         case EpisodeDuplicated:
-          console.log(err);
           throw new BadRequestException(err.message);
           break;
       }

@@ -29,5 +29,6 @@ import { Episode } from './episode.entity';
   ],
   controllers: [EpisodesController],
   providers: [EpisodesService],
+  exports: [EpisodesService]
 })
 export class EpisodesModule {}

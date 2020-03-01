@@ -26,6 +26,46 @@ export class Episode extends BaseEntity {
   coverImage: string;
 
   @Column({
+    nullable: true,
+  })
+  audioLink: string;
+
+  @Column({
+    nullable: true,
+  })
+  durationAudioInSecond: number;
+
+  // iTunes fields (TODO: moved to an episode_itunes_metadata later)
+
+  @Column({
+    nullable: true,
+  })
+  itunesDuration: string;
+
+  @Column({
+    nullable: true,
+  })
+  itunesSummary: string;
+
+  @Column({
+    nullable: true,
+  })
+  itunesImageLink: string;
+
+  @Column({
+    nullable: true,
+  })
+  itunesKeywords: string;
+
+  @Column({
+    nullable: true,
+    default: false
+  })
+  itunesExplicit: boolean;
+
+  // Dates fields
+
+  @Column({
     type: 'timestamptz',
   })
   createdAt: Date;
@@ -34,4 +74,9 @@ export class Episode extends BaseEntity {
     type: 'timestamptz',
   })
   updatedAt: Date;
+
+  @Column({
+    type: 'timestamptz',
+  })
+  publishedAt: Date;
 }

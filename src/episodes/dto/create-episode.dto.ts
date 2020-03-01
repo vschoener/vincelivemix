@@ -2,8 +2,8 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  IsDate,
   IsOptional,
+  IsDate,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
@@ -23,5 +23,5 @@ export class CreateEpisodeDto {
   @IsDate()
   @Type(() => Date)
   @IsOptional()
-  publishAt?: Date;
+  publishedAt?: Date;
 }

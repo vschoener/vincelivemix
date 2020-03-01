@@ -5,8 +5,10 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2018",
+    "esModuleInterop": true,
+    "target": "es2019",
     "sourceMap": true,
+    "lib": ["esnext", "dom"],
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
