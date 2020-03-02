@@ -4,13 +4,14 @@ import { XML_BUILDER_PROVIDER } from './constant/xmlbuilder.provider.constant';
 import { EpisodesService } from '../episodes/episodes.service';
 import { XMLBuilder, XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 import { Logger } from 'winston';
+import { create } from 'xmlbuilder2';
 
 @Injectable()
 export class RssService {
   private readonly logger: Logger;
 
   public constructor(
-    @Inject(XML_BUILDER_PROVIDER) private readonly xmlBuilderRoot: XMLBuilder,
+    @Inject(XML_BUILDER_PROVIDER) private readonly createXmlFunction: typeof create,
     @Inject(EpisodesService) private readonly episodesService: EpisodesService,
     @Inject('winston') logger: Logger
   ) {
@@ -54,7 +55,7 @@ export class RssService {
 
   public async generate(): Promise<XMLSerializedValue> {
     // TODO: Put public fields in Env variables or db config table
-    const xmlBuilder = this.xmlBuilderRoot
+    const xmlBuilder = this.createXmlFunction()
       .ele('channel')
         .ele('title').txt('Vince Live Mix').up()
         .ele('description').txt('Feel the vibe of the sound').up()

@@ -1,14 +1,21 @@
-import { Controller, Get, Header } from '@nestjs/common';
+import { Controller, Get, Header, Post } from '@nestjs/common';
 import { RssService } from './rss.service';
 import { XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 
-@Controller('/rss')
+@Controller('/api/rss')
 export class RssController {
   public constructor(private readonly rssService: RssService) {}
 
+  @Post()
+  public generate(): Promise<XMLSerializedValue> {
+    // TODO: Save generated content to a file
+    return this.rssService.generate();
+  }
+
   @Get()
-  @Header('Cache-Control', 'none')
-  public get(): Promise<XMLSerializedValue> {
+  @Header('Cache-Control', 'none') // This content could be cached
+  public getCurrent() : Promise<XMLSerializedValue> {
+    // TODO: Read from a generated file or 404 if not already generated
     return this.rssService.generate();
   }
 }
