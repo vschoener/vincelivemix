@@ -1,24 +1,28 @@
-# Dockerfile for production only
+#
+# Builder stage.
+# This state compile our TypeScript to get the JavaScript code
+#
+FROM node:12.13.0 AS builder
 
-# Installing stage
-FROM node:latest as installer
-ENV NODE_ENV=production
-WORKDIR /app
-# use changes to package.json to force Docker not to use the cache
-# when we change our application's nodejs dependencies:
+WORKDIR /usr/src/app
+
 COPY package*.json ./
-RUN npm install --quiet
-
-# Building stage
-FROM node:latest as builder
-WORKDIR /app
-COPY --from=installer /app .
-COPY ../src src
 COPY tsconfig*.json ./
-RUN npm run build
+COPY ./src ./src
+RUN npm ci --quiet && npm run build
 
-# Running stage
-FROM node:latest as run
+#
+# Production stage.
+# This state compile get back the JavaScript code from builder stage
+# It will also install the production package only
+#
+FROM node:12.13.0-slim
+
 WORKDIR /app
-COPY --from=builder /app .
-CMD [ "npm", "start" ]
+ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --quiet --only=production
+
+## We just need the dist folder to execute the command
+COPY --from=builder /usr/src/app/dist ./dist

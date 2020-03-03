@@ -20,16 +20,15 @@ export class EpisodesService {
   private readonly logger: Logger;
 
   constructor(
-    @InjectRepository(Episode)
-    private readonly episodeRepository: Repository<Episode>,
+    @InjectRepository(Episode) private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
     @Inject('winston') logger: Logger
   ) {
     this.logger = logger.child({ context: EpisodesService.name } )
   }
 
-  getEpisodeById(id: number): Promise<Episode> {
-    const episode = this.episodeRepository.findOne(id);
+  async getEpisodeById(id: number): Promise<Episode> {
+    const episode = await this.episodeRepository.findOne(id);
 
     if (!episode) {
       throw new NotFoundException(`Episode not found ${id}`);
@@ -51,7 +50,7 @@ export class EpisodesService {
     episode.publishedAt = createEpisodeDto.publishedAt ?? episode.createdAt;
 
     try {
-      await episode.save();
+      await this.episodeRepository.save(episode);
     } catch (err) {
       if (err.constructor === QueryFailedError) {
         if (err.constraint === EPISODE_CONSTRAINT) {

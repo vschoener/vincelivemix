@@ -39,7 +39,6 @@ export class EpisodesController {
       switch (err.constructor) {
         case EpisodeDuplicated:
           throw new BadRequestException(err.message);
-          break;
       }
 
       throw err;

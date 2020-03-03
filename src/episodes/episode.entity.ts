@@ -3,6 +3,12 @@ import { EpisodeStatus } from './episode.enum';
 
 @Entity()
 export class Episode extends BaseEntity {
+  constructor(episode: Partial<Episode> = {}) {
+    super();
+
+    Object.assign(this, episode);
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

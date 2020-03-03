@@ -7,14 +7,14 @@ export class RssController {
   public constructor(private readonly rssService: RssService) {}
 
   @Post()
-  public generate(): Promise<XMLSerializedValue> {
+  public async generate(): Promise<XMLSerializedValue> {
     // TODO: Save generated content to a file
     return this.rssService.generate();
   }
 
   @Get()
   @Header('Cache-Control', 'none') // This content could be cached
-  public getCurrent() : Promise<XMLSerializedValue> {
+  public async getCurrent() : Promise<XMLSerializedValue> {
     // TODO: Read from a generated file or 404 if not already generated
     return this.rssService.generate();
   }

@@ -1,0 +1,41 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+jobs:
+  test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+  build-and-push:
+    docker:
+      - image: circleci/node:12.13.0
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: false # Plan is disabled
+      - attach_workspace:
+          at: .
+      - run: |
+          TAG=build-$CIRCLE_BUILD_NUM
+          docker build -t sdevilcry/vincelivemix:$TAG -f ./docker/Dockerfile .
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
+          docker push sdevilcry/vincelivemix:$TAG
+workflows:
+  version: 2
+  test-build-and-publish:
+    jobs:
+      - test
+      - build-and-push:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
