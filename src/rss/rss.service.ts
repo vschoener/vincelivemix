@@ -55,7 +55,7 @@ export class RssService {
 
   public async generate(): Promise<XMLSerializedValue> {
     // TODO: Put public fields in Env variables or db config table
-    const xmlBuilder = this.createXmlFunction()
+    const xmlBuilder = this.createXmlFunction({ encoding: 'utf-8' })
       .ele('channel')
         .ele('title').txt('Vince Live Mix').up()
         .ele('description').txt('Feel the vibe of the sound').up()
@@ -77,7 +77,13 @@ export class RssService {
         .ele('itunes:image').att({
           href: 'link'
         }).up()
-        .ele('itunes:category').txt('Music').up()
+        .ele('itunes:category').txt('Music')
+      .up()
+      .att({
+        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+        'version': '2.0',
+        'xmlns:atom': 'http://www.w3.org/2005/Atom',
+      });
 
     const xmlBuilderItemState = await this.generateXmlItems(xmlBuilder);
 

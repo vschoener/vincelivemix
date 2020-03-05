@@ -7,6 +7,7 @@ export class RssController {
   public constructor(private readonly rssService: RssService) {}
 
   @Post()
+  @Header('content-type', 'application/rss+xml')
   public async generate(): Promise<XMLSerializedValue> {
     // TODO: Save generated content to a file
     return this.rssService.generate();
@@ -14,6 +15,7 @@ export class RssController {
 
   @Get()
   @Header('Cache-Control', 'none') // This content could be cached
+  @Header('content-type', 'application/rss+xml')
   public async getCurrent() : Promise<XMLSerializedValue> {
     // TODO: Read from a generated file or 404 if not already generated
     return this.rssService.generate();
