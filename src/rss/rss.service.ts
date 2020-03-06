@@ -31,19 +31,18 @@ export class RssService {
       xmlBuilder.ele('item')
         .ele('title').txt(episode.title).up()
         .ele('description').txt(episode.description).up()
-        .ele('pubDate').txt(episode.publishedAt.toISOString()).up()
-        // .ele('link').txt(episode.link).up() TODO: add link field
+        .ele('pubDate').txt(episode.publishedAt.toUTCString()).up()
+        .ele('guid').txt(episode.audioLink).up()
         .ele('enclosure').att({
-          url: 'link', // TODO: Get link from "episode.link"
-          length: 'duration_mp3', // TODO:  Calculate duration when uploading song in seconds
-          type: 'audio/mpeg' // TODO: UPDATE type when uploading song
+          url: episode.audioLink,
+          length: 0, // TODO:  Calculate duration when uploading song in seconds
+          type: 'audio/mp3' // TODO: UPDATE type when uploading song
         }).up()
-        .ele('guid').txt('link').up()
         // iTunes fields
-        .ele('itunes:duration').txt('itunes_duration').up() // TODO add duration when uploading song
+        .ele('itunes:duration').txt('0').up() // TODO add duration when uploading song
         .ele('itunes:summary').txt('itunes_summary').up() // TODO add duration when uploading song
         .ele('itunes:image').att({
-          href: 'link'
+          href: episode.itunesImageLink
         }).up() // TODO add duration when uploading song
         .ele('itunes:keywords').txt('keywords').up()
         .ele('itunes:explicit').txt('no').up()
@@ -53,40 +52,51 @@ export class RssService {
     return xmlBuilder;
   }
 
+  private generateToChannelNode(): XMLBuilder {
+    return this.createXmlFunction({ encoding: 'utf-8' })
+      .ele('rss').att({
+      'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+      'version': '2.0',
+      'xmlns:atom': 'http://www.w3.org/2005/Atom',
+    }).ele('channel');
+  }
+
   public async generate(): Promise<XMLSerializedValue> {
+    const channelNode = this.generateToChannelNode();
+
     // TODO: Put public fields in Env variables or db config table
-    const xmlBuilder = this.createXmlFunction({ encoding: 'utf-8' })
-      .ele('channel')
-        .ele('title').txt('Vince Live Mix').up()
-        .ele('description').txt('Feel the vibe of the sound').up()
-        .ele('link').txt('http://www.vincelivemix.fr').up()
-        .ele('language').txt('fr-fr').up()
-        .ele('copyright').txt('Vincent Schoener copyright 2020').up()
-        .ele('lastBuildDate').txt((new Date()).toISOString()).up()
-        .ele('itunes:author').txt('Vincent Schoener').up()
-        .ele('itunes:summary').txt(
-          'Live mix est un concentré de son House Electro allant du commercial à l\'inconnu. ' +
-        'Ces sets ont pour but de vous emmener dans un monde de musique unique afin de vous donner l\'envie de danser n\'importe où, n\'importe quand ! :)\n').up()
-        .ele('itunes:subtitle').txt('Feel the vibe of the sound').up()
-        .ele('itunes:owner')
-          .ele('name').txt('Vincent Schoener').up()
-          .ele('email').txt('vincent.schoener@gmail.com').up()
-        .up()
-        .ele('itunes:explicit').txt('No').up()
-        .ele('itunes:keywords').txt('Vince live mix electro house edm dj mixing').up()
-        .ele('itunes:image').att({
-          href: 'link'
-        }).up()
-        .ele('itunes:category').txt('Music')
+    channelNode
+      .ele('title').txt('Vince Live Mix').up()
+      .ele('description').txt('Feel the vibe of the sound').up()
+      .ele('link').txt('http://www.vincelivemix.fr').up()
+      .ele('language').txt('fr-fr').up()
+      .ele('copyright').txt('Vincent Schoener copyright 2020').up()
+      .ele('lastBuildDate').txt((new Date()).toUTCString()).up()
+      .ele('atom:link').att({
+        href: 'http://www.vincelivemix.fr/api/rss',
+        rel: 'self',
+        type: 'application/rss+xml'
+      }).up()
+      .ele('itunes:author').txt('Vincent Schoener').up()
+      .ele('itunes:summary').txt(
+        'Live mix est un concentré de son House Electro allant du commercial à l\'inconnu. ' +
+      'Ces sets ont pour but de vous emmener dans un monde de musique unique afin de vous donner l\'envie de danser n\'importe où, n\'importe quand ! :)\n').up()
+      .ele('itunes:subtitle').txt('Feel the vibe of the sound').up()
+      .ele('itunes:owner')
+        .ele('itunes:name').txt('Vincent Schoener').up()
+        .ele('itunes:email').txt('vincent.schoener@gmail.com').up()
       .up()
-      .att({
-        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
-        'version': '2.0',
-        'xmlns:atom': 'http://www.w3.org/2005/Atom',
-      });
+      .ele('itunes:explicit').txt('No').up()
+      .ele('itunes:keywords').txt('Vince live mix, electro, house, edm, dj, mixing').up()
+      .ele('itunes:image').att({
+        href: 'https://vincelivemix.s3.eu-west-3.amazonaws.com/images/podcast/vincelivemix-main.jpg'
+      }).up()
+      .ele('itunes:category').att({ text: 'Music' })
+    .up();
 
-    const xmlBuilderItemState = await this.generateXmlItems(xmlBuilder);
+    const channelNodeWithItems = await this.generateXmlItems(channelNode);
 
-    return xmlBuilderItemState.up().end();
+    // TODO: Store prettier setting in Env to disable it in production
+    return channelNodeWithItems.up().end({ prettyPrint: true });
   }
 }
