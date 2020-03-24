@@ -6,6 +6,7 @@ CONTAINER := $(if $(container),$(container))
 SHELL_CONTAINER := $(if $(container),$(container),app)
 BACKGROUND_START := $(if $(fg),,-d)
 DEPS := $(if $(packages),$(packages),)
+MIGRATION_NAME = ""
 
 all: clean stop build install
 
@@ -45,7 +46,10 @@ migrate-create:
 	docker-compose run --rm app npm run migration:create
 
 migrate-generate:
-	docker-compose run --rm app npm run migration:generate
+	docker-compose run --rm app npm run migration:generate ${MIGRATION_NAME}
 
-migrate-run:
+migrate-run-dev:
 	docker-compose run --rm app npm run migration:run
+
+migrate-run-prod:
+	docker-compose run --rm app npm run migration:run:prod
