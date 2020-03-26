@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EpisodesService } from './episodes.service';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Episode } from './episode.entity';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { DateManagerService } from '../core/date/date-manager.service';
 import { WinstonModule } from 'nest-winston';
 import { loggerSettings } from '../core/logger/logger.settings';
 import { NotFoundException } from '@nestjs/common';
+import { EpisodeMapper } from './mapper/episode.mapper';
 
 describe('EpisodeService', () => {
   let episodeService: EpisodesService;
@@ -20,6 +21,7 @@ describe('EpisodeService', () => {
       providers: [
         EpisodesService,
         DateManagerService,
+        EpisodeMapper,
         {
           provide: getRepositoryToken(Episode),
           useValue: {
