@@ -7,6 +7,7 @@ import { EpisodesModule } from './episodes/episodes.module';
 import * as typeOrmConfig from './config/typeorm.config';
 import { CoreModule } from './core/core.module';
 import { loggerSettings } from './core/logger/logger.settings';
+import { ItunesModule } from './itunes/itunes.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { loggerSettings } from './core/logger/logger.settings';
     WinstonModule.forRoot(loggerSettings),
     RssModule,
     EpisodesModule,
+    ItunesModule
   ],
 })
 export class AppModule {}
