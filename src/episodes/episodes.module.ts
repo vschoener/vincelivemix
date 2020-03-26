@@ -6,6 +6,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { uploadDestination } from '../config/upload.config';
 import { Episode } from './episode.entity';
+import { EpisodeMapper } from './mapper/episode.mapper';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { Episode } from './episode.entity';
     }),
   ],
   controllers: [EpisodesController],
-  providers: [EpisodesService],
+  providers: [EpisodesService, EpisodeMapper],
   exports: [EpisodesService]
 })
 export class EpisodesModule {}

@@ -14,6 +14,7 @@ import { DateManagerService } from '../core/date/date-manager.service';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
 import { Logger } from 'winston';
+import { EpisodeMapper } from './mapper/episode.mapper';
 
 @Injectable()
 export class EpisodesService {
@@ -22,6 +23,7 @@ export class EpisodesService {
   constructor(
     @InjectRepository(Episode) private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
+    @Inject(EpisodeMapper) private episodeMapper: EpisodeMapper,
     @Inject('winston') logger: Logger
   ) {
     this.logger = logger.child({ context: EpisodesService.name } )
@@ -40,11 +42,9 @@ export class EpisodesService {
   async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
     this.logger.info('Creating episode...', createEpisodeDto);
 
-    const episode = new Episode();
-    episode.description = createEpisodeDto.description;
-    episode.title = createEpisodeDto.title;
-    episode.number = createEpisodeDto.number;
-    episode.status = EpisodeStatus.DRAFT;
+    const episode = this.episodeMapper.mapCreateEpisodeDtoToDomain(createEpisodeDto);
+
+    episode.status = createEpisodeDto.status ?? EpisodeStatus.DRAFT;
     episode.createdAt = this.dateManagerService.getNewDate();
     episode.updatedAt = this.dateManagerService.getNewDate();
     episode.publishedAt = createEpisodeDto.publishedAt ?? episode.createdAt;
@@ -60,6 +60,10 @@ export class EpisodesService {
           throw new EpisodeDuplicated('Episode number already exists');
         }
       }
+
+      this.logger.error('Error creating episode', {
+        episode
+      });
 
       throw err;
     }
