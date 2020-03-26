@@ -5,6 +5,7 @@ import { EpisodesService } from '../episodes/episodes.service';
 import { XMLBuilder, XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 import { Logger } from 'winston';
 import { create } from 'xmlbuilder2';
+import { ItunesService } from '../itunes/itunes.service';
 
 @Injectable()
 export class RssService {
@@ -13,6 +14,7 @@ export class RssService {
   public constructor(
     @Inject(XML_BUILDER_PROVIDER) private readonly createXmlFunction: typeof create,
     @Inject(EpisodesService) private readonly episodesService: EpisodesService,
+    @Inject(ItunesService) private readonly itunesService: ItunesService,
     @Inject('winston') logger: Logger
   ) {
     this.logger = logger.child({ context: RssService.name } )
@@ -25,6 +27,8 @@ export class RssService {
       }
     });
 
+    const settings = await this.itunesService.getSettings();
+
     this.logger.info('Generate items from', { episodes });
 
     for (const episode of episodes) {
@@ -35,17 +39,17 @@ export class RssService {
         .ele('guid').txt(episode.audioLink).up()
         .ele('enclosure').att({
           url: episode.audioLink,
-          length: 0, // TODO:  Calculate duration when uploading song in seconds
-          type: 'audio/mp3' // TODO: UPDATE type when uploading song
+          length: episode.durationAudioInSecond,
+          type: 'audio/mp3'
         }).up()
         // iTunes fields
-        .ele('itunes:duration').txt('0').up() // TODO add duration when uploading song
-        .ele('itunes:summary').txt('itunes_summary').up() // TODO add duration when uploading song
+        .ele('itunes:duration').txt(episode.itunesDuration).up()
+        .ele('itunes:summary').txt(episode.itunesSummary).up()
         .ele('itunes:image').att({
           href: episode.itunesImageLink
         }).up() // TODO add duration when uploading song
-        .ele('itunes:keywords').txt('keywords').up()
-        .ele('itunes:explicit').txt('no').up()
+        .ele('itunes:keywords').txt(episode.itunesKeywords).up()
+        .ele('itunes:explicit').txt(settings.explicit).up()
       .up();
     }
 
@@ -64,35 +68,39 @@ export class RssService {
   public async generate(): Promise<XMLSerializedValue> {
     const channelNode = this.generateToChannelNode();
 
-    // TODO: Put public fields in Env variables or db config table
+    const settings = await this.itunesService.getSettings();
+
     channelNode
-      .ele('title').txt('Vince Live Mix').up()
-      .ele('description').txt('Feel the vibe of the sound').up()
-      .ele('link').txt('http://www.vincelivemix.fr').up()
-      .ele('language').txt('fr-fr').up()
-      .ele('copyright').txt('Vincent Schoener copyright 2020').up()
+      .ele('title').txt(settings.title).up()
+      .ele('description').txt(settings.summary).up()
+      .ele('link').txt(settings.link).up()
+      .ele('language').txt(settings.language).up()
+      .ele('copyright').txt(settings.copyright).up()
       .ele('lastBuildDate').txt((new Date()).toUTCString()).up()
       .ele('atom:link').att({
         href: 'http://www.vincelivemix.fr/api/rss',
         rel: 'self',
         type: 'application/rss+xml'
       }).up()
-      .ele('itunes:author').txt('Vincent Schoener').up()
-      .ele('itunes:summary').txt(
-        'Live mix est un concentré de son House Electro allant du commercial à l\'inconnu. ' +
-      'Ces sets ont pour but de vous emmener dans un monde de musique unique afin de vous donner l\'envie de danser n\'importe où, n\'importe quand ! :)\n').up()
-      .ele('itunes:subtitle').txt('Feel the vibe of the sound').up()
+      .ele('itunes:author').txt(settings.author).up()
+      .ele('itunes:summary').txt(settings.summary).up()
+      .ele('itunes:subtitle').txt(settings.subtitle).up()
       .ele('itunes:owner')
-        .ele('itunes:name').txt('Vincent Schoener').up()
-        .ele('itunes:email').txt('vincent.schoener@gmail.com').up()
+        .ele('itunes:name').txt(settings.ownerName).up()
+        .ele('itunes:email').txt(settings.ownerEmail).up()
       .up()
-      .ele('itunes:explicit').txt('No').up()
-      .ele('itunes:keywords').txt('Vince live mix, electro, house, edm, dj, mixing').up()
+      .ele('itunes:explicit').txt(settings.explicit).up()
+      .ele('itunes:keywords').txt(settings.keywords).up()
       .ele('itunes:image').att({
-        href: 'https://vincelivemix.s3.eu-west-3.amazonaws.com/images/podcast/vincelivemix-main.jpg'
-      }).up()
-      .ele('itunes:category').att({ text: 'Music' })
-    .up();
+        href: settings.image
+      }).up();
+
+    settings.categories.forEach(category => {
+      channelNode
+        .ele('itunes:category').att({ text: category });
+    });
+
+    channelNode.up();
 
     const channelNodeWithItems = await this.generateXmlItems(channelNode);
 

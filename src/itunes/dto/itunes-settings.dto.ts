@@ -57,10 +57,14 @@ export class ItunesSettingsDto {
   @IsNotEmpty()
   image: string;
 
-  @IsIn([true, false, 'yes', 'no', 'clean'])
-  explicit: boolean = false;
+  @IsIn(['true', 'false', 'yes', 'no', 'clean'])
+  explicit: 'true' | 'false' | 'yes' | 'no' | 'clean' = 'false';
 
   @IsUrl()
   @IsOptional()
   newFeedUrl?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  keywords: string;
 }

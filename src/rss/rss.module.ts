@@ -4,6 +4,7 @@ import { RssController } from './rss.controller';
 import { RssService } from './rss.service';
 import { xmlElementProvider } from './providers/xml-element.provider';
 import { EpisodesModule } from '../episodes/episodes.module';
+import { ItunesModule } from '../itunes/itunes.module';
 
 @Module({
   controllers: [RssController],
@@ -11,6 +12,6 @@ import { EpisodesModule } from '../episodes/episodes.module';
     RssService,
     xmlElementProvider
   ],
-  imports: [EpisodesModule]
+  imports: [EpisodesModule, ItunesModule]
 })
 export class RssModule {}

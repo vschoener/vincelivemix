@@ -6,6 +6,7 @@ import { SettingsModule } from '../shared/settings/settings.module';
 @Module({
   controllers: [ItunesController],
   providers: [ItunesService],
-  imports: [SettingsModule]
+  imports: [SettingsModule],
+  exports: [ItunesService]
 })
 export class ItunesModule {}

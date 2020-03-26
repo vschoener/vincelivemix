@@ -10,6 +10,7 @@ export type ItunesSettingsDomainModel = {
   author: string;
   categories: string[];
   image: string;
-  explicit: true | false | 'yes' | 'no' | 'clean';
+  explicit: 'true' | 'false' | 'yes' | 'no' | 'clean';
   newFeedUrl?: string;
-}
+  keywords: string;
+};
