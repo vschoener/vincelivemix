@@ -8,6 +8,7 @@ import { WinstonModule } from 'nest-winston';
 import { loggerSettings } from '../core/logger/logger.settings';
 import { NotFoundException } from '@nestjs/common';
 import { EpisodeMapper } from './mapper/episode.mapper';
+import { SettingsService } from '../shared/settings/settings.service';
 
 describe('EpisodeService', () => {
   let episodeService: EpisodesService;
@@ -28,6 +29,10 @@ describe('EpisodeService', () => {
             save: jest.fn(),
             findOne: jest.fn()
           }
+        },
+        {
+          provide: SettingsService,
+          useValue: jest.fn()
         }
       ],
     }).compile();
