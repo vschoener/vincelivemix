@@ -15,15 +15,22 @@ import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
 import { Logger } from 'winston';
 import { EpisodeMapper } from './mapper/episode.mapper';
+import { SettingsService } from '../shared/settings/settings.service';
+import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
+import { EpisodeSettingsDto } from './dto/episode-settings.dto';
+import { Settings } from '../shared/settings/entity/settings.entity';
 
 @Injectable()
 export class EpisodesService {
   private readonly logger: Logger;
 
+  private readonly settingsName = 'episode';
+
   constructor(
     @InjectRepository(Episode) private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
     @Inject(EpisodeMapper) private episodeMapper: EpisodeMapper,
+    @Inject(SettingsService) private readonly settings: SettingsService<EpisodeSettingsDomainModel>,
     @Inject('winston') logger: Logger
   ) {
     this.logger = logger.child({ context: EpisodesService.name } )
@@ -37,6 +44,25 @@ export class EpisodesService {
     }
 
     return episode;
+  }
+
+  async getHighLightEpisode(): Promise<Episode | null> {
+    this.logger.info('Getting highlight episode...');
+    const { highlightEpisode } = await this.settings.getSetting(this.settingsName);
+
+    if (!highlightEpisode) {
+      this.logger.error('Highlight episode not set');
+      throw new NotFoundException('Highlight episode not set');
+    }
+
+    this.logger.info('Retrieving episode', { highlightEpisode });
+    return this.episodeRepository.findOne(highlightEpisode);
+  }
+
+  async createOrUpdateEpisodeSettings(episodeSettingsDto: EpisodeSettingsDto): Promise<Settings<EpisodeSettingsDomainModel>> {
+    return this.settings.createOrUpdate(this.settingsName, {
+      highlightEpisode: episodeSettingsDto.episodeId
+    });
   }
 
   async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {

@@ -7,6 +7,7 @@ import { diskStorage } from 'multer';
 import { uploadDestination } from '../config/upload.config';
 import { Episode } from './episode.entity';
 import { EpisodeMapper } from './mapper/episode.mapper';
+import { SettingsModule } from '../shared/settings/settings.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EpisodeMapper } from './mapper/episode.mapper';
         }),
       }),
     }),
+    SettingsModule
   ],
   controllers: [EpisodesController],
   providers: [EpisodesService, EpisodeMapper],

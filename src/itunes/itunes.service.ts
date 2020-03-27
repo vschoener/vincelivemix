@@ -11,9 +11,7 @@ export class ItunesService {
   ) {}
 
   public async getSettings() {
-    const { values } = await this.settings.getSetting(this.settingName);
-
-    return values;
+    return this.settings.getSetting(this.settingName);
   }
 
   public async createOrUpdate(settings: ItunesSettingsDto) {

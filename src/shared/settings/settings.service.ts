@@ -10,10 +10,12 @@ export class SettingsService<T extends TypeSettings> {
     private readonly settingsRepository: Repository<Settings<T>>,
   ) {}
 
-  public async getSetting(name: string): Promise<Settings<T>> {
-    return this.settingsRepository.findOne({
+  public async getSetting(name: string): Promise<T> {
+    const { values } = await this.settingsRepository.findOne({
       name,
     });
+
+    return values;
   }
 
   public async createOrUpdate(name: string, values: T): Promise<Settings<T>> {

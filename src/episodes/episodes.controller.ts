@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post,
+  Post, Put,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -16,16 +16,28 @@ import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { EpisodeSettingsDto } from './dto/episode-settings.dto';
 
-@Controller('episodes')
+@Controller('/api/episodes')
 export class EpisodesController {
   constructor(
     private episodeService: EpisodesService,
   ) {}
 
+  @Get('/highlight-episode')
+  getHighlightEpisode(): Promise<Episode | null> {
+    return this.episodeService.getHighLightEpisode();
+  }
+
   @Get('/:id')
   getEpisodeById(@Param('id', ParseIntPipe) id: number): Promise<Episode> {
     return this.episodeService.getEpisodeById(id);
+  }
+
+  @Put('/settings')
+  @UsePipes(ValidationPipe)
+  updateOrCreateSettings(@Body() payload: EpisodeSettingsDto) {
+    return this.episodeService.createOrUpdateEpisodeSettings(payload);
   }
 
   @Post()
