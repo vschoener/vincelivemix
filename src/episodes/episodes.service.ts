@@ -1,14 +1,10 @@
 import * as fs from 'fs';
 import { extname } from 'path';
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from './episode.entity';
-import { Repository, QueryFailedError, FindManyOptions } from 'typeorm';
+import { FindManyOptions, QueryFailedError, Repository } from 'typeorm';
 import { EpisodeStatus } from './episode.enum';
 import { DateManagerService } from '../core/date/date-manager.service';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
@@ -73,7 +69,11 @@ export class EpisodesService {
     episode.status = createEpisodeDto.status ?? EpisodeStatus.DRAFT;
     episode.createdAt = this.dateManagerService.getNewDate();
     episode.updatedAt = this.dateManagerService.getNewDate();
-    episode.publishedAt = createEpisodeDto.publishedAt ?? episode.createdAt;
+
+    episode.publishedAt =
+      (createEpisodeDto.status === EpisodeStatus.PUBLISHED && createEpisodeDto.publishedAt)
+        ? (createEpisodeDto.publishedAt ?? episode.createdAt)
+        : undefined;
 
     try {
       await this.episodeRepository.save(episode);
@@ -128,7 +128,18 @@ export class EpisodesService {
     return { coverImage: episode.coverImage };
   }
 
-  public getEpisodes(findManyOptions?: FindManyOptions): Promise<Episode[]> {
+  public getPublishedEpisode(): Promise<Episode[]> {
+    return this.getEpisodes({
+      order: {
+        publishedAt: 'DESC'
+      },
+      where: {
+        status: EpisodeStatus.PUBLISHED
+      }
+    })
+  }
+
+  private getEpisodes(findManyOptions?: FindManyOptions<Episode>): Promise<Episode[]> {
     return this.episodeRepository.find(findManyOptions);
   }
 }

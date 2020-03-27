@@ -21,11 +21,7 @@ export class RssService {
   }
 
   private async generateXmlItems(xmlBuilder: XMLBuilder) {
-    const episodes = await this.episodesService.getEpisodes({
-      order: {
-        publishedAt: 'DESC'
-      }
-    });
+    const episodes = await this.episodesService.getPublishedEpisode();
 
     const settings = await this.itunesService.getSettings();
 

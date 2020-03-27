@@ -24,6 +24,11 @@ export class EpisodesController {
     private episodeService: EpisodesService,
   ) {}
 
+  @Get()
+  getEpisodes(): Promise<Episode[]> {
+    return this.episodeService.getPublishedEpisode();
+  }
+
   @Get('/highlight-episode')
   getHighlightEpisode(): Promise<Episode | null> {
     return this.episodeService.getHighLightEpisode();
