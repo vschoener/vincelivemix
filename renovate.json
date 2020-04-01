@@ -1,5 +1,14 @@
 {
   "extends": [
     "config:base"
+  ],
+  "labels": ["dependencies"],
+  "assignees": ["vschoener"],
+  "packageRules": [
+    {
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "groupName": "minors-update"
+    }
   ]
 }
