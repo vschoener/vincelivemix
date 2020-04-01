@@ -3,6 +3,12 @@
   "assignees": ["vschoener"],
   "packageRules": [
     {
+      "groupName": "nestjs-dependencies",
+      "automerge": false,
+      "labels": ["nestjs-core"],
+      "packagePatterns": ["^@nestjs"]
+    },
+    {
       "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true,
       "groupName": "minors-update",
