@@ -7,28 +7,18 @@ services:
     build:
       context: docker
       dockerfile: Dockerfile.dev
-    environment:
-      - NODE_ENV=development
-      - WAIT_HOSTS=postgres:5432
-      - TYPEORM_HOST=postgres
     volumes:
       - .:/app:cached
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - ${APP_PORT}:3000
     depends_on:
       - postgres
-    env_file:
-      - .env
 
   postgres:
     container_name: ${DOCKER_CONTAINER_PREFIX}.postgres
-    image: postgres:11
-    environment:
-      - POSTGRES_USER=john
-      - POSTGRES_PASSWORD=pwd0123456789
-      - POSTGRES_DB=vincelivemix
+    image: postgres:12.2
     volumes:
-      - postgres_vincelivemix/var/lib/postgresql/data
+      - postgres_vincelivemix:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:5432
 

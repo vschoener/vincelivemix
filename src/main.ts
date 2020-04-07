@@ -1,8 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import * as dotenv from 'dotenv';
-
-// Shitty way to load the conf asap, need a config service
-dotenv.config();
 
 import { AppModule } from './app.module';
 import { WinstonModule } from 'nest-winston';

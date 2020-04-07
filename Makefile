@@ -34,10 +34,10 @@ shell:
 	docker-compose run --rm ${SHELL_CONTAINER} sh
 
 clean:
-	rm -rf node_modules public .sass-cache .tmp dist client/bower_components
+	rm -rf node_modules dist
 
 install:
-	docker-compose run --rm ${SHELL_CONTAINER} npm install
+	docker-compose run --rm app npm install
 
 test:
 	docker-compose -f docker-compose.test.yml run --rm test                                                                                                                                                                       tech-docker-compose ✭ ◼
