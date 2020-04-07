@@ -13,12 +13,12 @@ export class Settings<T extends TypeSettings = {}> extends BaseEntity {
   id: number;
 
   @Column({
-    unique: true
+    unique: true,
   })
   name: string;
 
   @Column({
-    type: 'json'
+    type: 'json',
   })
-  values: T
+  values: T;
 }

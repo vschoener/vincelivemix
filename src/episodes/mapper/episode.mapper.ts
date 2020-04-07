@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class EpisodeMapper {
   mapCreateEpisodeDtoToDomain(createEpisodeDto: CreateEpisodeDto): Episode {
-    const { itunesKeywords, ...rest} = createEpisodeDto;
+    const { itunesKeywords, ...rest } = createEpisodeDto;
 
     const episode = new Episode(rest);
     episode.itunesKeywords = itunesKeywords.join(',');

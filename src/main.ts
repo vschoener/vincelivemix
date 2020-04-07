@@ -11,7 +11,7 @@ import { loggerSettings } from './core/logger/logger.settings';
 async function bootstrap() {
   const logger = WinstonModule.createLogger(loggerSettings);
   const app = await NestFactory.create(AppModule, {
-    logger
+    logger,
   });
 
   // quick and dirty approach while getting a real config service

@@ -16,7 +16,7 @@ import { ItunesModule } from './itunes/itunes.module';
     WinstonModule.forRoot(loggerSettings),
     RssModule,
     EpisodesModule,
-    ItunesModule
+    ItunesModule,
   ],
 })
 export class AppModule {}

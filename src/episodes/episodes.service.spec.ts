@@ -16,9 +16,7 @@ describe('EpisodeService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        WinstonModule.forRoot(loggerSettings),
-      ],
+      imports: [WinstonModule.forRoot(loggerSettings)],
       providers: [
         EpisodesService,
         DateManagerService,
@@ -27,13 +25,13 @@ describe('EpisodeService', () => {
           provide: getRepositoryToken(Episode),
           useValue: {
             save: jest.fn(),
-            findOne: jest.fn()
-          }
+            findOne: jest.fn(),
+          },
         },
         {
           provide: SettingsService,
-          useValue: jest.fn()
-        }
+          useValue: jest.fn(),
+        },
       ],
     }).compile();
 
@@ -53,7 +51,7 @@ describe('EpisodeService', () => {
     it('should return the episode', async () => {
       const episode = new Episode({
         id: 1,
-        audioLink: 'http://my.mp3.location'
+        audioLink: 'http://my.mp3.location',
       });
 
       episodeRepository.findOne.mockResolvedValue(episode);
@@ -64,8 +62,9 @@ describe('EpisodeService', () => {
     it('should throw NotFoundException if not found', async () => {
       episodeRepository.findOne.mockResolvedValue(undefined);
 
-      await expect(episodeService.getEpisodeById(1))
-        .rejects.toThrow(NotFoundException);
+      await expect(episodeService.getEpisodeById(1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
-  })
+  });
 });

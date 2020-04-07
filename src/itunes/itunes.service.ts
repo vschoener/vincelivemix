@@ -7,7 +7,8 @@ export class ItunesService {
   private settingName = 'itunes';
 
   constructor(
-    @Inject(SettingsService) private readonly settings: SettingsService<ItunesSettingsDomainModel>
+    @Inject(SettingsService)
+    private readonly settings: SettingsService<ItunesSettingsDomainModel>,
   ) {}
 
   public async getSettings() {

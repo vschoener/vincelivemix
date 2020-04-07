@@ -14,9 +14,9 @@ describe('Episode Controller', () => {
           provide: EpisodesService,
           useValue: {
             getEpisodeById: jest.fn(),
-          }
-        }
-      ]
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<EpisodesController>(EpisodesController);

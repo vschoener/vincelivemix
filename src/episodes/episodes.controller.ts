@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post, Put,
+  Post,
+  Put,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -20,9 +21,7 @@ import { EpisodeSettingsDto } from './dto/episode-settings.dto';
 
 @Controller('/api/episodes')
 export class EpisodesController {
-  constructor(
-    private episodeService: EpisodesService,
-  ) {}
+  constructor(private episodeService: EpisodesService) {}
 
   @Get()
   getEpisodes(): Promise<Episode[]> {

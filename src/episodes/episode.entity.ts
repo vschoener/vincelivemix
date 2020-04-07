@@ -65,7 +65,7 @@ export class Episode extends BaseEntity {
 
   @Column({
     nullable: true,
-    default: false
+    default: false,
   })
   itunesExplicit: boolean;
 

@@ -16,7 +16,7 @@ export class RssController {
   @Get()
   @Header('Cache-Control', 'none') // This content could be cached
   @Header('content-type', 'application/rss+xml')
-  public async getCurrent() : Promise<XMLSerializedValue> {
+  public async getCurrent(): Promise<XMLSerializedValue> {
     // TODO: Read from a generated file or 404 if not already generated
     return this.rssService.generate();
   }

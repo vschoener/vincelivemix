@@ -1,10 +1,13 @@
 import {
-  IsArray, IsEmail,
+  IsArray,
+  IsEmail,
   IsIn,
-  IsNotEmpty, IsOptional,
+  IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
-  MinLength, ValidateNested,
+  MinLength,
+  ValidateNested,
 } from 'class-validator';
 
 export class ItunesSettingsDto {

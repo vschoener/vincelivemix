@@ -11,9 +11,7 @@ import { SettingsModule } from '../shared/settings/settings.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Episode,
-    ]),
+    TypeOrmModule.forFeature([Episode]),
     MulterModule.registerAsync({
       useFactory: async () => ({
         storage: diskStorage({
@@ -28,10 +26,10 @@ import { SettingsModule } from '../shared/settings/settings.module';
         }),
       }),
     }),
-    SettingsModule
+    SettingsModule,
   ],
   controllers: [EpisodesController],
   providers: [EpisodesService, EpisodeMapper],
-  exports: [EpisodesService]
+  exports: [EpisodesService],
 })
 export class EpisodesModule {}

@@ -23,13 +23,15 @@ export class EpisodesService {
   private readonly settingsName = 'episode';
 
   constructor(
-    @InjectRepository(Episode) private readonly episodeRepository: Repository<Episode>,
+    @InjectRepository(Episode)
+    private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
     @Inject(EpisodeMapper) private episodeMapper: EpisodeMapper,
-    @Inject(SettingsService) private readonly settings: SettingsService<EpisodeSettingsDomainModel>,
-    @Inject('winston') logger: Logger
+    @Inject(SettingsService)
+    private readonly settings: SettingsService<EpisodeSettingsDomainModel>,
+    @Inject('winston') logger: Logger,
   ) {
-    this.logger = logger.child({ context: EpisodesService.name } )
+    this.logger = logger.child({ context: EpisodesService.name });
   }
 
   async getEpisodeById(id: number): Promise<Episode> {
@@ -44,7 +46,9 @@ export class EpisodesService {
 
   async getHighLightEpisode(): Promise<Episode | null> {
     this.logger.info('Getting highlight episode...');
-    const { highlightEpisode } = await this.settings.getSetting(this.settingsName);
+    const { highlightEpisode } = await this.settings.getSetting(
+      this.settingsName,
+    );
 
     if (!highlightEpisode) {
       this.logger.error('Highlight episode not set');
@@ -55,24 +59,29 @@ export class EpisodesService {
     return this.episodeRepository.findOne(highlightEpisode);
   }
 
-  async createOrUpdateEpisodeSettings(episodeSettingsDto: EpisodeSettingsDto): Promise<Settings<EpisodeSettingsDomainModel>> {
+  async createOrUpdateEpisodeSettings(
+    episodeSettingsDto: EpisodeSettingsDto,
+  ): Promise<Settings<EpisodeSettingsDomainModel>> {
     return this.settings.createOrUpdate(this.settingsName, {
-      highlightEpisode: episodeSettingsDto.episodeId
+      highlightEpisode: episodeSettingsDto.episodeId,
     });
   }
 
   async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
     this.logger.info('Creating episode...', createEpisodeDto);
 
-    const episode = this.episodeMapper.mapCreateEpisodeDtoToDomain(createEpisodeDto);
+    const episode = this.episodeMapper.mapCreateEpisodeDtoToDomain(
+      createEpisodeDto,
+    );
 
     episode.status = createEpisodeDto.status ?? EpisodeStatus.DRAFT;
     episode.createdAt = this.dateManagerService.getNewDate();
     episode.updatedAt = this.dateManagerService.getNewDate();
 
     episode.publishedAt =
-      (createEpisodeDto.status === EpisodeStatus.PUBLISHED && createEpisodeDto.publishedAt)
-        ? (createEpisodeDto.publishedAt ?? episode.createdAt)
+      createEpisodeDto.status === EpisodeStatus.PUBLISHED &&
+      createEpisodeDto.publishedAt
+        ? createEpisodeDto.publishedAt ?? episode.createdAt
         : undefined;
 
     try {
@@ -81,14 +90,14 @@ export class EpisodesService {
       if (err.constructor === QueryFailedError) {
         if (err.constraint === EPISODE_CONSTRAINT) {
           this.logger.error('Episode already exists', {
-            number: episode.number
+            number: episode.number,
           });
           throw new EpisodeDuplicated('Episode number already exists');
         }
       }
 
       this.logger.error('Error creating episode', {
-        episode
+        episode,
       });
 
       throw err;
@@ -131,15 +140,17 @@ export class EpisodesService {
   public getPublishedEpisode(): Promise<Episode[]> {
     return this.getEpisodes({
       order: {
-        publishedAt: 'DESC'
+        publishedAt: 'DESC',
       },
       where: {
-        status: EpisodeStatus.PUBLISHED
-      }
-    })
+        status: EpisodeStatus.PUBLISHED,
+      },
+    });
   }
 
-  private getEpisodes(findManyOptions?: FindManyOptions<Episode>): Promise<Episode[]> {
+  private getEpisodes(
+    findManyOptions?: FindManyOptions<Episode>,
+  ): Promise<Episode[]> {
     return this.episodeRepository.find(findManyOptions);
   }
 }

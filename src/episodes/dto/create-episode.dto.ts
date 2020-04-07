@@ -10,7 +10,8 @@ import {
   IsMilitaryTime,
   IsArray,
   IsBoolean,
-  Min, Matches,
+  Min,
+  Matches,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { EpisodeStatus } from '../episode.enum';
@@ -25,7 +26,7 @@ export class CreateEpisodeDto {
   description: string;
 
   @IsNumber()
-  @Transform(value => Number(value))
+  @Transform((value) => Number(value))
   number: number;
 
   @IsIn(['published', 'draft'])

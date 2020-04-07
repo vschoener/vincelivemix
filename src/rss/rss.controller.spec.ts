@@ -9,12 +9,14 @@ describe('RssController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [RssController],
-      providers: [{
-        provide: RssService,
-        useValue: {
-          generate: jest.fn()
-        }
-      }],
+      providers: [
+        {
+          provide: RssService,
+          useValue: {
+            generate: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     rssController = app.get<RssController>(RssController);

@@ -8,10 +8,7 @@ import { ItunesModule } from '../itunes/itunes.module';
 
 @Module({
   controllers: [RssController],
-  providers: [
-    RssService,
-    xmlElementProvider
-  ],
-  imports: [EpisodesModule, ItunesModule]
+  providers: [RssService, xmlElementProvider],
+  imports: [EpisodesModule, ItunesModule],
 })
 export class RssModule {}
