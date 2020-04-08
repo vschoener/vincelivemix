@@ -44,7 +44,7 @@
     "typeorm": "0.2.24",
     "uuid": "7.0.3",
     "winston": "3.2.1",
-    "xmlbuilder2": "2.1.1"
+    "xmlbuilder2": "2.1.2"
   },
   "devDependencies": {
     "@nestjs/testing": "7.0.7",
