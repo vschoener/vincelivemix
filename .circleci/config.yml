@@ -19,7 +19,7 @@ jobs:
     environment:
       IMAGE_NAME: sdevilcry/vincelivemix
     docker:
-      - image: circleci/node:12.16.1
+      - image: circleci/node:12.16.2
     steps:
       - setup_remote_docker:
           docker_layer_caching: false # Plan is disabled
