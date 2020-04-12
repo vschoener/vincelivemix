@@ -1,8 +1,7 @@
 import * as dotenv from 'dotenv';
+import { ConfigDatabaseDto } from '../core/config/dto/config-database.dto';
+import { validateSync } from 'class-validator';
 import { ConfigDatabaseService } from '../core/config/config-database.service';
-import { WinstonModule } from 'nest-winston';
-import { loggerSettings } from '../core/logger/logger.settings';
-import { Logger } from 'winston';
 
 /**
  * Handle TypeORM CLI Case
@@ -11,14 +10,18 @@ if (!module.parent) {
   dotenv.config();
 }
 
-const winstonLoaded = WinstonModule.forRoot(loggerSettings);
+// Duplicated load from config-database.service but code stay clean and easy to use
+const config = new ConfigDatabaseDto({
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+  synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
+  autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
+  logging: process.env.TYPEORM_LOGGING === 'true',
+});
 
-// @ts-ignore
-const logger = winstonLoaded.exports.find<Logger>(({ provide }) => provide === 'winston');
-console.log(logger);
-const configDatabaseDto = ConfigDatabaseService.mapEnvToDto();
-ConfigDatabaseService.validate(configDatabaseDto, logger);
+validateSync(config);
 
-const config = ConfigDatabaseService.getTypeOrmConfig(configDatabaseDto);
-
-export default config;
+export = ConfigDatabaseService.getTypeORMConfig(config);

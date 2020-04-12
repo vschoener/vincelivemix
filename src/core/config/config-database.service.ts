@@ -5,7 +5,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigInterface } from './interfaces/config.interface';
 import { ConfigValidationException } from './exceptions/config-validation.exception';
 import { ConfigNotInitializedException } from './exceptions/config-not-initialized.exception';
-import { validateSync } from 'class-validator';
+import { validateOrReject, validateSync } from 'class-validator';
 import { Logger } from 'winston';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
@@ -19,8 +19,28 @@ export class ConfigDatabaseService implements ConfigInterface {
   }
 
   public async load() {
-    this.configuration = ConfigDatabaseService.mapEnvToDto();
-    ConfigDatabaseService.validate(this.configuration, this.logger);
+    const configuration = new ConfigDatabaseDto({
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
+      autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
+      logging: process.env.TYPEORM_LOGGING === 'true',
+    });
+
+    this.logger.info('Loading...', { configuration });
+
+    try {
+      await validateOrReject(configuration);
+      this.configuration = configuration;
+    } catch (err) {
+      this.logger.error('Database configuration is not valid', { err });
+      throw new ConfigValidationException(
+        'Database configuration is not valid',
+      );
+    }
 
     return this;
   }
@@ -35,41 +55,12 @@ export class ConfigDatabaseService implements ConfigInterface {
     return this.configuration;
   }
 
-  public getTypeORMConfig(): TypeOrmModuleOptions {
-    const config = this.get();
-
-    return ConfigDatabaseService.getTypeOrmConfig(config);
-  }
-
   /**
-   * Static method below helps for TYPE ORM CLI...
+   * We care having this used by CLI or App to keep one unique point of true
+   *
+   * @param config
    */
-
-  static validate(configuration: ConfigDatabaseDto, logger: Logger) {
-    const validationError = validateSync(configuration);
-
-    if (!validationError.length) {
-      logger.error('Database configuration is not valid', { validationError });
-      throw new ConfigValidationException(
-        'Database configuration is not valid',
-      );
-    }
-  }
-
-  static mapEnvToDto(): ConfigDatabaseDto {
-    return new ConfigDatabaseDto({
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
-      autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
-      logging: process.env.TYPEORM_LOGGING === 'true',
-    });
-  }
-
-  static getTypeOrmConfig(config: ConfigDatabaseDto): TypeOrmModuleOptions {
+  public static getTypeORMConfig(config: ConfigDatabaseDto): TypeOrmModuleOptions {
     return {
       type: 'postgres',
       host: config.host,
@@ -77,15 +68,15 @@ export class ConfigDatabaseService implements ConfigInterface {
       username: config.user,
       password: config.password,
       database: config.database,
-      entities: [__dirname + '/../**/*.entity.{ts,js}'],
+      entities: [__dirname + '/../../**/*.entity.{ts,js}'],
       synchronize: config.synchronize,
       migrationsRun: config.autoRunMigration,
       logging: config.logging,
       logger: 'debug',
-      migrations: [__dirname + '/../migrations/**/*.{ts,js}'],
+      migrations: [__dirname + '/../../migrations/**/*.{ts,js}'],
       cli: {
         migrationsDir: 'src/migrations',
       },
-    }
+    };
   }
 }

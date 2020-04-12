@@ -24,9 +24,7 @@
     "migration:generate": "npm run typeorm:dev migration:generate -- -n",
     "migration:create": "npm run typeorm:dev migration:create -- -n",
     "migration:run": "npm run typeorm:dev migration:run",
-    "migration:run:prod": "npm run typeorm:prod migration:run",
-    "prettier": "prettier -l '{src,test}/**/*.{ts,yml,yaml,json,md}'",
-    "prettier:write": "prettier --write '{src,test}/**/*.{ts,yml,yaml,json,md}'"
+    "migration:run:prod": "npm run typeorm:prod migration:run"
   },
   "dependencies": {
     "@nestjs/common": "7.0.7",

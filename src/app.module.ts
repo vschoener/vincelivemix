@@ -17,7 +17,7 @@ import { ConfigDatabaseService } from './core/config/config-database.service';
       imports: [ConfigModule],
       inject: [ConfigDatabaseService],
       useFactory: async (configService: ConfigDatabaseService) => {
-        return configService.getTypeORMConfig();
+        return ConfigDatabaseService.getTypeORMConfig(configService.get());
       }
     }),
     WinstonModule.forRoot(loggerSettings),
