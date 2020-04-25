@@ -78,11 +78,9 @@ export class EpisodesService {
     episode.createdAt = this.dateManagerService.getNewDate();
     episode.updatedAt = this.dateManagerService.getNewDate();
 
-    episode.publishedAt =
-      createEpisodeDto.status === EpisodeStatus.PUBLISHED &&
-      createEpisodeDto.publishedAt
-        ? createEpisodeDto.publishedAt ?? episode.createdAt
-        : undefined;
+    if (createEpisodeDto.status === EpisodeStatus.PUBLISHED) {
+      episode.publishedAt = episode.publishedAt ?? episode.createdAt
+    }
 
     try {
       await this.episodeRepository.save(episode);

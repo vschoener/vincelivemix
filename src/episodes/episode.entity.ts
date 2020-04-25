@@ -83,6 +83,7 @@ export class Episode extends BaseEntity {
 
   @Column({
     type: 'timestamptz',
+    nullable: true
   })
   publishedAt: Date;
 }
