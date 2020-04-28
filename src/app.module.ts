@@ -7,20 +7,22 @@ import { EpisodesModule } from './episodes/episodes.module';
 import { CoreModule } from './core/core.module';
 import { loggerSettings } from './core/logger/logger.settings';
 import { ItunesModule } from './itunes/itunes.module';
-import { ConfigModule } from './core/config/config.module';
-import { ConfigDatabaseService } from './core/config/config-database.service';
+import { ConfigModule } from './config/config.module';
+import { DatabaseConfigService } from './config/database-config.service';
 
 @Module({
   imports: [
+    WinstonModule.forRoot(loggerSettings),
+    ConfigModule,
     CoreModule,
     TypeOrmCoreModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigDatabaseService],
-      useFactory: async (configService: ConfigDatabaseService) => {
-        return ConfigDatabaseService.getTypeORMConfig(configService.get());
-      }
+      inject: [DatabaseConfigService],
+      useFactory: async (configService: DatabaseConfigService) => {
+        const config = (await configService.load()).get();
+        return DatabaseConfigService.getTypeORMConfig(config);
+      },
     }),
-    WinstonModule.forRoot(loggerSettings),
     RssModule,
     EpisodesModule,
     ItunesModule,

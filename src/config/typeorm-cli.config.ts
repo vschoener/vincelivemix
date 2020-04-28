@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
-import { ConfigDatabaseDto } from '../core/config/dto/config-database.dto';
+import { DatabaseConfigDto } from './dto/database-config.dto';
 import { validateSync } from 'class-validator';
-import { ConfigDatabaseService } from '../core/config/config-database.service';
+import { DatabaseConfigService } from './database-config.service';
 
 /**
  * Handle TypeORM CLI Case
@@ -11,7 +11,7 @@ if (!module.parent) {
 }
 
 // Duplicated load from config-database.service but code stay clean and easy to use
-const config = new ConfigDatabaseDto({
+const config = new DatabaseConfigDto({
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
   user: process.env.POSTGRES_USER,
@@ -24,4 +24,4 @@ const config = new ConfigDatabaseDto({
 
 validateSync(config);
 
-export = ConfigDatabaseService.getTypeORMConfig(config);
+export = DatabaseConfigService.getTypeORMConfig(config);

@@ -1,7 +1,7 @@
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
-export class ConfigDatabaseDto {
-  constructor(configDatabase: Partial<ConfigDatabaseDto> = {}) {
+export class DatabaseConfigDto {
+  constructor(configDatabase: Partial<DatabaseConfigDto> = {}) {
     Object.assign(this, configDatabase);
   }
 
