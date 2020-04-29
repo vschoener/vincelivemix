@@ -8,7 +8,6 @@ import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
 import { AuthConfigService } from '../config/auth-config.service';
 import { JwtStrategy } from './jwt.strategy';
-import { ModuleRef } from '@nestjs/core';
 
 @Module({
   providers: [AuthService, LocalStrategy, JwtStrategy],
