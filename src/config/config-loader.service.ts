@@ -1,9 +1,9 @@
 import { Logger } from 'winston';
 import { validateOrReject } from 'class-validator';
 import { ConfigValidationException } from './exceptions/config-validation.exception';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class ConfigLoaderService<T = any> {
   private configuration: T;
 

@@ -9,6 +9,8 @@ import { loggerSettings } from './core/logger/logger.settings';
 import { ItunesModule } from './itunes/itunes.module';
 import { ConfigModule } from './config/config.module';
 import { DatabaseConfigService } from './config/database-config.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -20,12 +22,15 @@ import { DatabaseConfigService } from './config/database-config.service';
       inject: [DatabaseConfigService],
       useFactory: async (configService: DatabaseConfigService) => {
         const config = (await configService.load()).get();
+
         return DatabaseConfigService.getTypeORMConfig(config);
       },
     }),
     RssModule,
     EpisodesModule,
     ItunesModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
