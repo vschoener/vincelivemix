@@ -12,12 +12,13 @@ COPY ./src ./src
 RUN npm ci --quiet && npm run build
 
 #
-# Production stage.
+# Build Production stage.
 # This state compile get back the JavaScript code from builder stage
 # It will also install the production package only
 #
-FROM node:12.16.3-alpine
+FROM node:12.16.3-alpine as production-builder
 
+# This cause a layer build as it brings 200 mb of data
 RUN apk --no-cache add --virtual builds-deps build-base python
 
 WORKDIR /app
@@ -26,5 +27,12 @@ ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci --quiet --only=production
 
-## We just need the dist folder to execute the command
+FROM node:12.16.3-alpine as production
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY package*.json ./
+## We just need the dist folder and node_modules to execute the command
 COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=production-builder /app/node_modules ./node_modules
