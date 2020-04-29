@@ -16,7 +16,9 @@ RUN npm ci --quiet && npm run build
 # This state compile get back the JavaScript code from builder stage
 # It will also install the production package only
 #
-FROM node:12.16.3-slim
+FROM node:12.16.3-alpine
+
+RUN apk --no-cache add --virtual builds-deps build-base python
 
 WORKDIR /app
 ENV NODE_ENV=production
