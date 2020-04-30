@@ -6,8 +6,8 @@ import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
-import { AuthConfigService } from '../config/auth-config.service';
 import { JwtStrategy } from './jwt.strategy';
+import { AuthConfigDto } from '../config/dto/auth-config.dto';
 
 @Module({
   providers: [AuthService, LocalStrategy, JwtStrategy],
@@ -16,11 +16,10 @@ import { JwtStrategy } from './jwt.strategy';
     UsersModule,
     PassportModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule],
       useFactory: async (
-        authConfigService: AuthConfigService,
+        authConfigDto: AuthConfigDto,
       ): Promise<JwtModuleOptions> => {
-        const { privateKey, lifetime } = authConfigService.get();
+        const { privateKey, lifetime } = authConfigDto;
 
         return {
           secret: privateKey,
@@ -29,7 +28,7 @@ import { JwtStrategy } from './jwt.strategy';
           },
         };
       },
-      inject: [AuthConfigService],
+      inject: [AuthConfigDto],
     }),
   ],
   controllers: [AuthController],

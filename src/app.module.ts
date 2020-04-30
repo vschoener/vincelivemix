@@ -11,20 +11,18 @@ import { ConfigModule } from './config/config.module';
 import { DatabaseConfigService } from './config/database-config.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { DatabaseConfigDto } from './config/dto/database-config.dto';
 
 @Module({
   imports: [
     WinstonModule.forRoot(loggerSettings),
-    ConfigModule,
+    ConfigModule.forRoot(),
     CoreModule,
     TypeOrmCoreModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [DatabaseConfigService],
-      useFactory: async (configService: DatabaseConfigService) => {
-        const config = (await configService.load()).get();
-
-        return DatabaseConfigService.getTypeORMConfig(config);
+      useFactory: async (databaseConfigDto: DatabaseConfigDto) => {
+        return DatabaseConfigService.getTypeORMConfig(databaseConfigDto);
       },
+      inject: [DatabaseConfigDto],
     }),
     RssModule,
     EpisodesModule,

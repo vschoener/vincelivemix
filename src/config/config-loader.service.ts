@@ -2,9 +2,10 @@ import { Logger } from 'winston';
 import { validateOrReject } from 'class-validator';
 import { ConfigValidationException } from './exceptions/config-validation.exception';
 import { Inject, Injectable, Scope } from '@nestjs/common';
+import { ConfigNotInitializedException } from './exceptions/config-not-initialized.exception';
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class ConfigLoaderService<T = any> {
+export class ConfigLoaderService<T> {
   private configuration: T;
 
   public constructor(@Inject('winston') protected logger: Logger) {
@@ -12,7 +13,7 @@ export class ConfigLoaderService<T = any> {
   }
 
   public async load(configuration: T) {
-    this.logger.debug('Loading...');
+    this.logger.info(`Loading ${configuration.constructor.name}...`);
 
     await this.validate(configuration);
 
@@ -22,11 +23,11 @@ export class ConfigLoaderService<T = any> {
     return this;
   }
 
-  public isLoaded(): boolean {
-    return !!this.configuration;
-  }
-
   public get(): T {
+    if (!this.configuration) {
+      throw new ConfigNotInitializedException(`Configuration not loaded`);
+    }
+
     return this.configuration;
   }
 

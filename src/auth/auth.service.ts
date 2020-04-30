@@ -2,16 +2,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { AuthConfigService } from '../config/auth-config.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { JwtDto } from './dto/jwt.dto';
+import { AuthConfigDto } from '../config/dto/auth-config.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(AuthConfigService)
-    private readonly authConfigService: AuthConfigService,
+    private readonly authConfig: AuthConfigDto,
     @Inject(UsersService) private readonly usersService: UsersService,
     private jwtService: JwtService,
   ) {}
@@ -45,7 +44,7 @@ export class AuthService {
       isSuperAdminUserEnabled,
       superAdminUser,
       superAdminPassword,
-    } = this.authConfigService.get();
+    } = this.authConfig;
     if (isSuperAdminUserEnabled) {
       return username === superAdminUser && password === superAdminPassword;
     }
