@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-
-import { XML_BUILDER_PROVIDER } from './constant/xmlbuilder.provider.constant';
-import { EpisodesService } from '../episodes/episodes.service';
 import { XMLBuilder, XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 import { Logger } from 'winston';
 import { create } from 'xmlbuilder2';
+
+import { EpisodesService } from '../episodes/episodes.service';
+import { XML_BUILDER_PROVIDER } from './constant/xmlbuilder.provider.constant';
 import { ItunesService } from '../itunes/itunes.service';
 
 @Injectable()
@@ -19,70 +19,6 @@ export class RssService {
     @Inject('winston') logger: Logger,
   ) {
     this.logger = logger.child({ context: RssService.name });
-  }
-
-  private async generateXmlItems(xmlBuilder: XMLBuilder) {
-    const episodes = await this.episodesService.getPublishedEpisode();
-
-    const settings = await this.itunesService.getSettings();
-
-    this.logger.info('Generate items from', { episodes });
-
-    for (const episode of episodes) {
-      xmlBuilder
-        .ele('item')
-        .ele('title')
-        .txt(episode.title)
-        .up()
-        .ele('description')
-        .txt(episode.description)
-        .up()
-        .ele('pubDate')
-        .txt(episode.publishedAt.toUTCString())
-        .up()
-        .ele('guid')
-        .txt(episode.audioLink)
-        .up()
-        .ele('enclosure')
-        .att({
-          url: episode.audioLink,
-          length: episode.durationAudioInSecond,
-          type: 'audio/mp3',
-        })
-        .up()
-        // iTunes fields
-        .ele('itunes:duration')
-        .txt(episode.itunesDuration)
-        .up()
-        .ele('itunes:summary')
-        .txt(episode.itunesSummary)
-        .up()
-        .ele('itunes:image')
-        .att({
-          href: episode.itunesImageLink,
-        })
-        .up() // TODO add duration when uploading song
-        .ele('itunes:keywords')
-        .txt(episode.itunesKeywords)
-        .up()
-        .ele('itunes:explicit')
-        .txt(settings.explicit)
-        .up()
-        .up();
-    }
-
-    return xmlBuilder;
-  }
-
-  private generateToChannelNode(): XMLBuilder {
-    return this.createXmlFunction({ encoding: 'utf-8' })
-      .ele('rss')
-      .att({
-        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
-        version: '2.0',
-        'xmlns:atom': 'http://www.w3.org/2005/Atom',
-      })
-      .ele('channel');
   }
 
   public async generate(): Promise<XMLSerializedValue> {
@@ -155,5 +91,69 @@ export class RssService {
 
     // TODO: Store prettier setting in Env to disable it in production
     return channelNodeWithItems.up().end({ prettyPrint: true });
+  }
+
+  private async generateXmlItems(xmlBuilder: XMLBuilder) {
+    const episodes = await this.episodesService.getPublishedEpisode();
+
+    const settings = await this.itunesService.getSettings();
+
+    this.logger.info('Generate items from', { episodes });
+
+    for (const episode of episodes) {
+      xmlBuilder
+        .ele('item')
+        .ele('title')
+        .txt(episode.title)
+        .up()
+        .ele('description')
+        .txt(episode.description)
+        .up()
+        .ele('pubDate')
+        .txt(episode.publishedAt.toUTCString())
+        .up()
+        .ele('guid')
+        .txt(episode.audioLink)
+        .up()
+        .ele('enclosure')
+        .att({
+          url: episode.audioLink,
+          length: episode.durationAudioInSecond,
+          type: 'audio/mp3',
+        })
+        .up()
+        // iTunes fields
+        .ele('itunes:duration')
+        .txt(episode.itunesDuration)
+        .up()
+        .ele('itunes:summary')
+        .txt(episode.itunesSummary)
+        .up()
+        .ele('itunes:image')
+        .att({
+          href: episode.itunesImageLink,
+        })
+        .up() // TODO add duration when uploading song
+        .ele('itunes:keywords')
+        .txt(episode.itunesKeywords)
+        .up()
+        .ele('itunes:explicit')
+        .txt(settings.explicit)
+        .up()
+        .up();
+    }
+
+    return xmlBuilder;
+  }
+
+  private generateToChannelNode(): XMLBuilder {
+    return this.createXmlFunction({ encoding: 'utf-8' })
+      .ele('rss')
+      .att({
+        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+        version: '2.0',
+        'xmlns:atom': 'http://www.w3.org/2005/Atom',
+      })
+      .ele('channel');
   }
 }

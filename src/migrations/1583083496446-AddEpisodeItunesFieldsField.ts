@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddEpisodeItunesFieldsField1583083496446
   implements MigrationInterface {
-  name = 'AddEpisodeItunesFieldsField1583083496446';
+  public name = 'AddEpisodeItunesFieldsField1583083496446';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

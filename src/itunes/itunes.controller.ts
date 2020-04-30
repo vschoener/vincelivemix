@@ -1,4 +1,3 @@
-import { ItunesService } from './itunes.service';
 import {
   Body,
   Controller,
@@ -7,11 +6,13 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+
+import { ItunesService } from './itunes.service';
 import { ItunesSettingsDto } from './dto/itunes-settings.dto';
 
 @Controller('/itunes')
 export class ItunesController {
-  constructor(private readonly itunesService: ItunesService) {}
+  public constructor(private readonly itunesService: ItunesService) {}
 
   @Get()
   public async getSettings() {

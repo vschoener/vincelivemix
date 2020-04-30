@@ -1,13 +1,8 @@
-import {
-  DynamicModule,
-  FactoryProvider,
-  Global,
-  Module,
-  Type,
-} from '@nestjs/common';
+import { DynamicModule, FactoryProvider, Global, Module } from '@nestjs/common';
 import * as dotenv from 'dotenv';
-import { ConfigLoaderService } from './config-loader.service';
 import { Logger } from 'winston';
+
+import { ConfigLoaderService } from './config-loader.service';
 import { DatabaseConfigDto } from './dto/database-config.dto';
 import { WebServerConfigDto } from './dto/web-server-config.dto';
 import { AuthConfigDto } from './dto/auth-config.dto';
@@ -17,7 +12,7 @@ dotenv.config();
 @Global()
 @Module({})
 export class ConfigModule {
-  static forRoot(): DynamicModule {
+  public static forRoot(): DynamicModule {
     const configs = [
       new DatabaseConfigDto({
         host: process.env.POSTGRES_HOST,

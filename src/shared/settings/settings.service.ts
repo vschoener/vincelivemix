@@ -1,11 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
+
 import { Settings } from './entity/settings.entity';
 import { UNIQUE_VIOLATION_CODE_ERROR } from '../constants/postgres.constant';
 import { TypeSettings } from './types/settings.type';
 
 export class SettingsService<T extends TypeSettings> {
-  constructor(
+  public constructor(
     @InjectRepository(Settings)
     private readonly settingsRepository: Repository<Settings<T>>,
   ) {}
@@ -41,6 +42,7 @@ export class SettingsService<T extends TypeSettings> {
       {
         name,
       },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       { values },
     );

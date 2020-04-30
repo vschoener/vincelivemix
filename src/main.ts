@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
+import { WinstonModule } from 'nest-winston';
 
 import { AppModule } from './app.module';
-import { WinstonModule } from 'nest-winston';
 import { loggerSettings } from './core/logger/logger.settings';
 import { WebServerConfigDto } from './config/dto/web-server-config.dto';
 

@@ -12,41 +12,44 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EpisodeSettingsDto } from './dto/episode-settings.dto';
 
 @Controller('/api/episodes')
 export class EpisodesController {
-  constructor(private episodeService: EpisodesService) {}
+  public constructor(private episodeService: EpisodesService) {}
 
   @Get()
-  getEpisodes(): Promise<Episode[]> {
+  public getEpisodes(): Promise<Episode[]> {
     return this.episodeService.getPublishedEpisode();
   }
 
   @Get('/highlight-episode')
-  getHighlightEpisode(): Promise<Episode | null> {
+  public getHighlightEpisode(): Promise<Episode | null> {
     return this.episodeService.getHighLightEpisode();
   }
 
   @Get('/:id')
-  getEpisodeById(@Param('id', ParseIntPipe) id: number): Promise<Episode> {
+  public getEpisodeById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Episode> {
     return this.episodeService.getEpisodeById(id);
   }
 
   @Put('/settings')
   @UsePipes(ValidationPipe)
-  updateOrCreateSettings(@Body() payload: EpisodeSettingsDto) {
+  public updateOrCreateSettings(@Body() payload: EpisodeSettingsDto) {
     return this.episodeService.createOrUpdateEpisodeSettings(payload);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  async createEpisode(
+  public async createEpisode(
     @Body() createEpisodeDto: CreateEpisodeDto,
   ): Promise<Episode> {
     try {
@@ -63,7 +66,7 @@ export class EpisodesController {
 
   @Post('/:id/cover_image')
   @UseInterceptors(FileInterceptor('coverImage'))
-  uploadCoverImage(
+  public uploadCoverImage(
     @Param('id') id: number,
     @UploadedFile() coverImage: Express.Multer.File,
   ) {

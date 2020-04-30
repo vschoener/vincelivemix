@@ -2,43 +2,43 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
-  constructor(user: Partial<User> = {}) {
-    super();
-
-    Object.assign(this, user);
-  }
-
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @Column()
-  firstName: string;
+  public firstName: string;
 
   @Column()
-  lastName: string;
+  public lastName: string;
 
   @Column()
-  email: string;
+  public email: string;
 
   @Column()
-  encodedPassword: string;
+  public encodedPassword: string;
 
   @Column('varchar', {
     array: true,
   })
-  roles: string[];
+  public roles: string[];
 
   // Dates fields
 
   @Column({
     type: 'timestamptz',
   })
-  createdAt: Date;
+  public createdAt: Date;
 
   @Column({
     type: 'timestamptz',
   })
-  updatedAt: Date;
+  public updatedAt: Date;
 
-  isSuperAdmin: boolean = false;
+  public isSuperAdmin = false;
+
+  public constructor(user: Partial<User> = {}) {
+    super();
+
+    Object.assign(this, user);
+  }
 }

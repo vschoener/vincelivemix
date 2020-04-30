@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+
 import { AuthService } from './auth.service';
-import { AuthConfigService } from '../config/auth-config.service';
 import { UsersService } from '../users/users.service';
+import { AuthConfigDto } from '../config/dto/auth-config.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
     const authConfigService = {
-      provide: AuthConfigService,
+      provide: AuthConfigDto,
       useValue: jest.fn(),
     };
 
@@ -21,7 +22,7 @@ describe('AuthService', () => {
           useValue: jest.fn(),
         },
         {
-          provide: AuthConfigService,
+          provide: AuthConfigDto,
           useValue: authConfigService,
         },
         {

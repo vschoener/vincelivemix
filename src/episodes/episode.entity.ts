@@ -1,89 +1,90 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 import { EpisodeStatus } from './episode.enum';
 
 @Entity()
 export class Episode extends BaseEntity {
-  constructor(episode: Partial<Episode> = {}) {
-    super();
-
-    Object.assign(this, episode);
-  }
-
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @Column()
-  title: string;
+  public title: string;
 
   @Column({
     unique: true,
   })
-  number: number;
+  public number: number;
 
   @Column()
-  description: string;
+  public description: string;
 
   @Column()
-  status: EpisodeStatus;
+  public status: EpisodeStatus;
 
   @Column({
     nullable: true,
   })
-  coverImage: string;
+  public coverImage: string;
 
   @Column({
     nullable: true,
   })
-  audioLink: string;
+  public audioLink: string;
 
   @Column({
     nullable: true,
   })
-  durationAudioInSecond: number;
+  public durationAudioInSecond: number;
 
   // iTunes fields (TODO: moved to an episode_itunes_metadata later)
 
   @Column({
     nullable: true,
   })
-  itunesDuration: string;
+  public itunesDuration: string;
 
   @Column({
     nullable: true,
   })
-  itunesSummary: string;
+  public itunesSummary: string;
 
   @Column({
     nullable: true,
   })
-  itunesImageLink: string;
+  public itunesImageLink: string;
 
   @Column({
     nullable: true,
   })
-  itunesKeywords: string;
+  public itunesKeywords: string;
 
   @Column({
     nullable: true,
     default: false,
   })
-  itunesExplicit: boolean;
+  public itunesExplicit: boolean;
 
   // Dates fields
 
   @Column({
     type: 'timestamptz',
   })
-  createdAt: Date;
+  public createdAt: Date;
 
   @Column({
     type: 'timestamptz',
   })
-  updatedAt: Date;
+  public updatedAt: Date;
 
   @Column({
     type: 'timestamptz',
-    nullable: true
+    nullable: true,
   })
-  publishedAt: Date;
+  public publishedAt: Date;
+
+  public constructor(episode: Partial<Episode> = {}) {
+    super();
+
+    Object.assign(this, episode);
+  }
 }

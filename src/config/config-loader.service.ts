@@ -1,7 +1,8 @@
 import { Logger } from 'winston';
 import { validateOrReject } from 'class-validator';
-import { ConfigValidationException } from './exceptions/config-validation.exception';
 import { Inject, Injectable, Scope } from '@nestjs/common';
+
+import { ConfigValidationException } from './exceptions/config-validation.exception';
 import { ConfigNotInitializedException } from './exceptions/config-not-initialized.exception';
 
 @Injectable({ scope: Scope.TRANSIENT })

@@ -1,22 +1,22 @@
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class AuthConfigDto {
-  constructor(configDatabase: Partial<AuthConfigDto> = {}) {
-    Object.assign(this, configDatabase);
-  }
-
   @IsString()
-  privateKey: string;
+  public privateKey: string;
 
   @IsNumber()
-  lifetime: number;
+  public lifetime: number;
 
   @IsString()
-  superAdminUser: string;
+  public superAdminUser: string;
 
   @IsString()
-  superAdminPassword: string;
+  public superAdminPassword: string;
 
   @IsBoolean()
-  isSuperAdminUserEnabled: boolean;
+  public isSuperAdminUserEnabled: boolean;
+
+  public constructor(configDatabase: Partial<AuthConfigDto> = {}) {
+    Object.assign(this, configDatabase);
+  }
 }

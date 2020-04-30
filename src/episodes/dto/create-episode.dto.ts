@@ -7,62 +7,62 @@ import {
   IsIn,
   IsUrl,
   MinLength,
-  IsMilitaryTime,
   IsArray,
   IsBoolean,
   Min,
   Matches,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+
 import { EpisodeStatus } from '../episode.enum';
 
 export class CreateEpisodeDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  public title: string;
 
   @IsString()
   @IsNotEmpty()
-  description: string;
+  public description: string;
 
   @IsNumber()
   @Transform((value) => Number(value))
-  number: number;
+  public number: number;
 
   @IsIn(['published', 'draft'])
-  status: EpisodeStatus;
+  public status: EpisodeStatus;
 
   @IsUrl()
-  coverImage: string;
+  public coverImage: string;
 
   @IsUrl()
-  audioLink: string;
+  public audioLink: string;
 
   @IsNumber()
   @Min(1)
-  durationAudioInSecond: number;
+  public durationAudioInSecond: number;
 
   @Matches(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/)
-  itunesDuration: string;
+  public itunesDuration: string;
 
   @IsString()
   @MinLength(20)
-  itunesSummary: string;
+  public itunesSummary: string;
 
   @IsUrl()
-  itunesImageLink: string;
+  public itunesImageLink: string;
 
   @IsArray()
   @IsString({
     each: true,
   })
-  itunesKeywords: string[];
+  public itunesKeywords: string[];
 
   @IsBoolean()
-  itunesExplicit: boolean = false;
+  public itunesExplicit = false;
 
   @IsDate()
   @Type(() => Date)
   @IsOptional()
-  publishedAt?: Date;
+  public publishedAt?: Date;
 }

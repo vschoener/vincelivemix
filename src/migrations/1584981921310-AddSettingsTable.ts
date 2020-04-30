@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddSettingsTable1584981921310 implements MigrationInterface {
-  name = 'AddSettingsTable1584981921310';
+  public name = 'AddSettingsTable1584981921310';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(

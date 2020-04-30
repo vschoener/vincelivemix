@@ -1,5 +1,5 @@
 import { utilities } from 'nest-winston';
-import winston from 'winston';
+import * as winston from 'winston';
 
 export const loggerSettings = {
   transports: [

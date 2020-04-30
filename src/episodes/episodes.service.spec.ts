@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EpisodesService } from './episodes.service';
 import { Repository } from 'typeorm';
-import { Episode } from './episode.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DateManagerService } from '../core/date/date-manager.service';
 import { WinstonModule } from 'nest-winston';
-import { loggerSettings } from '../core/logger/logger.settings';
 import { NotFoundException } from '@nestjs/common';
+
+import { EpisodesService } from './episodes.service';
+import { Episode } from './episode.entity';
+import { DateManagerService } from '../core/date/date-manager.service';
+import { loggerSettings } from '../core/logger/logger.settings';
 import { EpisodeMapper } from './mapper/episode.mapper';
 import { SettingsService } from '../shared/settings/settings.service';
 

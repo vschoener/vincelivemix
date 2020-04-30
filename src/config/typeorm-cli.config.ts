@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
-import { DatabaseConfigDto } from './dto/database-config.dto';
 import { validateSync } from 'class-validator';
+
+import { DatabaseConfigDto } from './dto/database-config.dto';
 import { DatabaseConfigService } from './database-config.service';
 
 /**

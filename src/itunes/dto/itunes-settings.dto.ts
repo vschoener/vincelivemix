@@ -7,45 +7,44 @@ import {
   IsString,
   IsUrl,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
 
 export class ItunesSettingsDto {
   @IsString()
   @MinLength(10)
-  ownerName: string;
+  public ownerName: string;
 
   @IsEmail()
   @MinLength(10)
-  ownerEmail: string;
+  public ownerEmail: string;
 
   @IsString()
   @MinLength(10)
-  title: string;
+  public title: string;
 
   @IsString()
   @MinLength(10)
-  subtitle: string;
+  public subtitle: string;
 
   @IsString()
   @MinLength(20)
-  summary: string;
+  public summary: string;
 
   @IsString()
   @MinLength(2)
-  language: string;
+  public language: string;
 
   @IsString()
   @IsNotEmpty()
-  link: string;
+  public link: string;
 
   @IsString()
   @IsNotEmpty()
-  copyright: string;
+  public copyright: string;
 
   @IsString()
   @IsNotEmpty()
-  author: string;
+  public author: string;
 
   @IsArray()
   @IsString({
@@ -54,20 +53,20 @@ export class ItunesSettingsDto {
   @MinLength(3, {
     each: true,
   })
-  categories: string[];
+  public categories: string[];
 
   @IsUrl()
   @IsNotEmpty()
-  image: string;
+  public image: string;
 
   @IsIn(['true', 'false', 'yes', 'no', 'clean'])
-  explicit: 'true' | 'false' | 'yes' | 'no' | 'clean' = 'false';
+  public explicit: 'true' | 'false' | 'yes' | 'no' | 'clean' = 'false';
 
   @IsUrl()
   @IsOptional()
-  newFeedUrl?: string;
+  public newFeedUrl?: string;
 
   @IsString()
   @IsNotEmpty()
-  keywords: string;
+  public keywords: string;
 }

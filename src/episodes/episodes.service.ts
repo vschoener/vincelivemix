@@ -1,15 +1,16 @@
 import * as fs from 'fs';
 import { extname } from 'path';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Episode } from './episode.entity';
 import { FindManyOptions, QueryFailedError, Repository } from 'typeorm';
+import { Logger } from 'winston';
+
+import { CreateEpisodeDto } from './dto/create-episode.dto';
+import { Episode } from './episode.entity';
 import { EpisodeStatus } from './episode.enum';
 import { DateManagerService } from '../core/date/date-manager.service';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
-import { Logger } from 'winston';
 import { EpisodeMapper } from './mapper/episode.mapper';
 import { SettingsService } from '../shared/settings/settings.service';
 import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
@@ -22,7 +23,7 @@ export class EpisodesService {
 
   private readonly settingsName = 'episode';
 
-  constructor(
+  public constructor(
     @InjectRepository(Episode)
     private readonly episodeRepository: Repository<Episode>,
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
@@ -34,7 +35,7 @@ export class EpisodesService {
     this.logger = logger.child({ context: EpisodesService.name });
   }
 
-  async getEpisodeById(id: number): Promise<Episode> {
+  public async getEpisodeById(id: number): Promise<Episode> {
     const episode = await this.episodeRepository.findOne(id);
 
     if (!episode) {
@@ -44,7 +45,7 @@ export class EpisodesService {
     return episode;
   }
 
-  async getHighLightEpisode(): Promise<Episode | null> {
+  public async getHighLightEpisode(): Promise<Episode | null> {
     this.logger.info('Getting highlight episode...');
     const { highlightEpisode } = await this.settings.getSetting(
       this.settingsName,
@@ -59,7 +60,7 @@ export class EpisodesService {
     return this.episodeRepository.findOne(highlightEpisode);
   }
 
-  async createOrUpdateEpisodeSettings(
+  public async createOrUpdateEpisodeSettings(
     episodeSettingsDto: EpisodeSettingsDto,
   ): Promise<Settings<EpisodeSettingsDomainModel>> {
     return this.settings.createOrUpdate(this.settingsName, {
@@ -67,7 +68,9 @@ export class EpisodesService {
     });
   }
 
-  async createEpisode(createEpisodeDto: CreateEpisodeDto): Promise<Episode> {
+  public async createEpisode(
+    createEpisodeDto: CreateEpisodeDto,
+  ): Promise<Episode> {
     this.logger.info('Creating episode...', createEpisodeDto);
 
     const episode = this.episodeMapper.mapCreateEpisodeDtoToDomain(
@@ -79,7 +82,7 @@ export class EpisodesService {
     episode.updatedAt = this.dateManagerService.getNewDate();
 
     if (createEpisodeDto.status === EpisodeStatus.PUBLISHED) {
-      episode.publishedAt = episode.publishedAt ?? episode.createdAt
+      episode.publishedAt = episode.publishedAt ?? episode.createdAt;
     }
 
     try {
@@ -113,10 +116,10 @@ export class EpisodesService {
    * @param file
    * @param fileType
    */
-  async storeImage(
+  public async storeImage(
     episodeId: number,
     file: Express.Multer.File,
-    fileType: string = 'coverImage',
+    fileType = 'coverImage',
   ): Promise<Partial<Episode>> {
     const episode = await this.getEpisodeById(episodeId);
 

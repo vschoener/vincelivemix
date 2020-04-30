@@ -1,6 +1,7 @@
 import { Controller, Get, Header, Post } from '@nestjs/common';
-import { RssService } from './rss.service';
 import { XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
+
+import { RssService } from './rss.service';
 
 @Controller('/api/rss')
 export class RssController {

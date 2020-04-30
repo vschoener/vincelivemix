@@ -1,31 +1,31 @@
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class DatabaseConfigDto {
-  constructor(configDatabase: Partial<DatabaseConfigDto> = {}) {
-    Object.assign(this, configDatabase);
-  }
-
   @IsString()
-  host: string;
+  public host: string;
 
   @IsNumber()
-  port: number;
+  public port: number;
 
   @IsString()
-  user: string;
+  public user: string;
 
   @IsString()
-  password: string;
+  public password: string;
 
   @IsString()
-  database: string;
+  public database: string;
 
   @IsBoolean()
-  synchronize: boolean;
+  public synchronize: boolean;
 
   @IsBoolean()
-  autoRunMigration: boolean;
+  public autoRunMigration: boolean;
 
   @IsBoolean()
-  logging: boolean;
+  public logging: boolean;
+
+  public constructor(configDatabase: Partial<DatabaseConfigDto> = {}) {
+    Object.assign(this, configDatabase);
+  }
 }

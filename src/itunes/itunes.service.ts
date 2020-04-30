@@ -1,4 +1,5 @@
 import { Inject } from '@nestjs/common';
+
 import { SettingsService } from '../shared/settings/settings.service';
 import { ItunesSettingsDomainModel } from './domain-models/itunes-settings.domain-model';
 import { ItunesSettingsDto } from './dto/itunes-settings.dto';
@@ -6,7 +7,7 @@ import { ItunesSettingsDto } from './dto/itunes-settings.dto';
 export class ItunesService {
   private settingName = 'itunes';
 
-  constructor(
+  public constructor(
     @Inject(SettingsService)
     private readonly settings: SettingsService<ItunesSettingsDomainModel>,
   ) {}

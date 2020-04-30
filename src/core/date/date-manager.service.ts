@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DateManagerService {
-  getNewDate(): Date {
+  public getNewDate(): Date {
     return new Date();
   }
 }

@@ -1,9 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddDateFields1573508322312 implements MigrationInterface {
-  name = 'AddDateFields1573508322312';
+  public name = 'AddDateFields1573508322312';
 
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner) {
     await queryRunner.query(
       `ALTER TABLE "episode" ADD "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL`,
       undefined,
@@ -14,7 +14,7 @@ export class AddDateFields1573508322312 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner) {
     await queryRunner.query(
       `ALTER TABLE "episode" DROP COLUMN "updatedAt"`,
       undefined,
