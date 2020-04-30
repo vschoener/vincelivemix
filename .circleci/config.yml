@@ -12,7 +12,7 @@ jobs:
           paths:
             - .
       - node/install-npm:
-          - node-version: 12.16.2
+          node-version: 12.16.2
       - node/install-packages
       - run:
           command: npm test
