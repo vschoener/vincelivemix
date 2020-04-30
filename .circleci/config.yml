@@ -11,10 +11,11 @@ jobs:
           root: .
           paths:
             - .
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm test
+      - node/install-npm:
+          - node-version: 12.16.2
+      - node/install-packages
+      - run:
+          command: npm test
   build-and-push:
     environment:
       IMAGE_NAME: sdevilcry/vincelivemix
