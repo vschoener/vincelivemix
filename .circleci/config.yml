@@ -11,7 +11,7 @@ jobs:
           root: .
           paths:
             - .
-      - node/install-npm:
+      - node/install:
           node-version: 12.16.2
       - node/install-packages
       - run:
