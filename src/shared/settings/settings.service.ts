@@ -31,6 +31,8 @@ export class SettingsService<T extends TypeSettings> {
       if (
         !(
           err.constructor === QueryFailedError &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           err.code === UNIQUE_VIOLATION_CODE_ERROR
         )
       ) {

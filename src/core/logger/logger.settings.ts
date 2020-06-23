@@ -1,15 +1,12 @@
 import { utilities } from 'nest-winston';
-import * as winston from 'winston';
+import { format, LoggerOptions, transports } from 'winston';
 
-export const loggerSettings = {
+export const loggerSettings: LoggerOptions = {
+  exitOnError: false,
+  format: format.timestamp(),
   transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        utilities.format.nestLike(),
-      ),
+    new transports.Console({
+      format: format.combine(utilities.format.nestLike()),
     }),
-    // other transports...
   ],
-  // other options
 };
