@@ -89,6 +89,9 @@ export class EpisodesService {
       await this.episodeRepository.save(episode);
     } catch (err) {
       if (err.constructor === QueryFailedError) {
+        // TODO: Looks like the type are not up to date from this time
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (err.constraint === EPISODE_CONSTRAINT) {
           this.logger.error('Episode already exists', {
             number: episode.number,
