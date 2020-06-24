@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
-
-import { EpisodesController } from './episodes.controller';
-import { EpisodesService } from './episodes.service';
 import { diskStorage } from 'multer';
+
 import { uploadDestination } from '../config/upload.config';
 import { Episode } from './episode.entity';
 import { EpisodeMapper } from './mapper/episode.mapper';
 import { SettingsModule } from '../shared/settings/settings.module';
+import { EpisodesController } from './episodes.controller';
+import { EpisodesService } from './episodes.service';
 
 @Module({
   imports: [

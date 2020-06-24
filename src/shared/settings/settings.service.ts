@@ -44,7 +44,7 @@ export class SettingsService<T extends TypeSettings> {
       {
         name,
       },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       { values },
     );

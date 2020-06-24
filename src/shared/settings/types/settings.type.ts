@@ -1,1 +1,1 @@
-export type TypeSettings = {};
+export type TypeSettings = Record<string, unknown>;

@@ -7,18 +7,17 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EpisodeSettingsDto } from './dto/episode-settings.dto';
+import { Settings } from '../shared/settings/entity/settings.entity';
+import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
 
 @Controller('/api/episodes')
 export class EpisodesController {
@@ -43,7 +42,9 @@ export class EpisodesController {
 
   @Put('/settings')
   @UsePipes(ValidationPipe)
-  public updateOrCreateSettings(@Body() payload: EpisodeSettingsDto) {
+  public updateOrCreateSettings(
+    @Body() payload: EpisodeSettingsDto,
+  ): Promise<Settings<EpisodeSettingsDomainModel>> {
     return this.episodeService.createOrUpdateEpisodeSettings(payload);
   }
 
@@ -53,7 +54,7 @@ export class EpisodesController {
     @Body() createEpisodeDto: CreateEpisodeDto,
   ): Promise<Episode> {
     try {
-      return await this.episodeService.createEpisode(createEpisodeDto);
+      return this.episodeService.createEpisode(createEpisodeDto);
     } catch (err) {
       switch (err.constructor) {
         case EpisodeDuplicated:
@@ -62,18 +63,5 @@ export class EpisodesController {
 
       throw err;
     }
-  }
-
-  @Post('/:id/cover_image')
-  @UseInterceptors(FileInterceptor('coverImage'))
-  public uploadCoverImage(
-    @Param('id') id: number,
-    @UploadedFile() coverImage: Express.Multer.File,
-  ) {
-    if (!coverImage) {
-      throw new BadRequestException('coverImage file is missing');
-    }
-
-    return this.episodeService.storeImage(id, coverImage);
   }
 }

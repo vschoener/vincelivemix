@@ -1,6 +1,5 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-
 // eslint-disable-next-line
 import { Strategy } from 'passport-local'; //  Strategy is exported from node module but wrong in type
 import { AuthService } from './auth.service';
