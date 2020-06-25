@@ -56,7 +56,7 @@ export class CreateEpisodeDto {
   @IsString({
     each: true,
   })
-  public itunesKeywords: string[];
+  public itunesKeywords: string[] = [];
 
   @IsBoolean()
   public itunesExplicit = false;

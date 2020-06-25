@@ -34,6 +34,7 @@ export class EpisodesService {
   }
 
   public async getEpisodeById(id: number): Promise<Episode> {
+    this.logger.info('Getting episode...', { id });
     const episode = await this.episodeRepository.findOne(id);
 
     if (!episode) {
@@ -45,14 +46,14 @@ export class EpisodesService {
 
   public async getHighLightEpisode(): Promise<Episode | null> {
     this.logger.info('Getting highlight episode...');
-    const { highlightEpisode } = await this.settings.getSetting(
-      this.settingsName,
-    );
+    const episodeSettings = await this.settings.getSetting(this.settingsName);
 
-    if (!highlightEpisode) {
+    if (!episodeSettings || !episodeSettings.highlightEpisode) {
       this.logger.error('Highlight episode not set');
       throw new NotFoundException('Highlight episode not set');
     }
+
+    const { highlightEpisode } = episodeSettings;
 
     this.logger.info('Retrieving episode', { highlightEpisode });
     return this.episodeRepository.findOne(highlightEpisode);
@@ -84,10 +85,10 @@ export class EpisodesService {
     }
 
     try {
-      await this.episodeRepository.save(episode);
+      return this.episodeRepository.save(episode);
     } catch (err) {
       if (err.constructor === QueryFailedError) {
-        // TODO: Looks like the type are not up to date from this time
+        // TODO: Looks like the type are not up to date from this QueryFailedError
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (err.constraint === EPISODE_CONSTRAINT) {
@@ -96,16 +97,14 @@ export class EpisodesService {
           });
           throw new EpisodeDuplicated('Episode number already exists');
         }
+
+        this.logger.error('Error creating episode', {
+          episode,
+        });
+
+        throw err;
       }
-
-      this.logger.error('Error creating episode', {
-        episode,
-      });
-
-      throw err;
     }
-
-    return episode;
   }
 
   public getPublishedEpisode(): Promise<Episode[]> {
