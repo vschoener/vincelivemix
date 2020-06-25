@@ -97,13 +97,13 @@ export class EpisodesService {
           });
           throw new EpisodeDuplicated('Episode number already exists');
         }
-
-        this.logger.error('Error creating episode', {
-          episode,
-        });
-
-        throw err;
       }
+
+      this.logger.error('Error creating episode', {
+        episode,
+      });
+
+      throw err;
     }
   }
 
