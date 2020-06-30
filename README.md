@@ -1,4 +1,6 @@
-[![CircleCi](https://circleci.com/gh/vschoener/vincelivemix/tree/master.svg?style=svg)](https://circleci.com/gh/vschoener/vincelivemix) [![ValidateRSs](https://validator.w3.org/feed/images/valid-rss-rogers.png)](https://validator.w3.org/feed/check.cgi?url=http%3A//www.vincelivemix.fr/api/rss)
+[![CircleCi](https://circleci.com/gh/vschoener/vincelivemix/tree/master.svg?style=svg)](https://circleci.com/gh/vschoener/vincelivemix)  [![codecov](https://codecov.io/gh/vschoener/vincelivemix/branch/master/graph/badge.svg)](https://codecov.io/gh/vschoener/vincelivemix)
+
+[![ValidateRSs](https://validator.w3.org/feed/images/valid-rss-rogers.png)](https://validator.w3.org/feed/check.cgi?url=http%3A//www.vincelivemix.fr/api/rss)
 
 # Vince live mix website
 
