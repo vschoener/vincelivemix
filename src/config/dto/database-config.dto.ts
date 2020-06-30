@@ -25,6 +25,9 @@ export class DatabaseConfigDto {
   @IsBoolean()
   public logging: boolean;
 
+  @IsNumber()
+  public retriesNumber: number;
+
   public constructor(configDatabase: Partial<DatabaseConfigDto> = {}) {
     Object.assign(this, configDatabase);
   }

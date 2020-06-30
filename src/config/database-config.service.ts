@@ -25,6 +25,7 @@ export class DatabaseConfigService {
       migrationsRun: config.autoRunMigration,
       logging: config.logging,
       logger: 'debug',
+      retryAttempts: config.retriesNumber,
       migrations: [__dirname + '/../migrations/**/*.{ts,js}'],
       cli: {
         migrationsDir: 'src/migrations',

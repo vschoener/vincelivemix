@@ -3,20 +3,26 @@ import { QueryFailedError, Repository } from 'typeorm';
 
 import { Settings } from './entity/settings.entity';
 import { UNIQUE_VIOLATION_CODE_ERROR } from '../constants/postgres.constant';
-import { TypeSettings } from './types/settings.type';
+import { SettingsNotFoundException } from './exception/settings-not-found.exception';
 
-export class SettingsService<T extends TypeSettings> {
+export class SettingsService<T = Record<string, unknown>> {
   public constructor(
     @InjectRepository(Settings)
     private readonly settingsRepository: Repository<Settings<T>>,
   ) {}
 
   public async getSetting(name: string): Promise<T> {
-    const { values } = await this.settingsRepository.findOne({
+    const settings = await this.settingsRepository.findOne({
       name,
     });
 
-    return values;
+    if (!settings) {
+      throw new SettingsNotFoundException(
+        `Settings has not been found: ${name}`,
+      );
+    }
+
+    return settings.values;
   }
 
   public async createOrUpdate(name: string, values: T): Promise<Settings<T>> {
@@ -49,6 +55,6 @@ export class SettingsService<T extends TypeSettings> {
       { values },
     );
 
-    return this.settingsRepository.findOne({ name });
+    return await this.settingsRepository.findOne({ name });
   }
 }
