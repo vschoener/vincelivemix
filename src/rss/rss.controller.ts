@@ -1,24 +1,18 @@
-import { Controller, Get, Header, Post } from '@nestjs/common';
+import { Controller, Get, Header, Post, UseFilters } from '@nestjs/common';
 import { XMLSerializedValue } from 'xmlbuilder2/lib/interfaces';
 
 import { RssService } from './rss.service';
+import { SettingsNotFoundExceptionFilter } from '../shared/settings/filters/settings-not-found-exception.filter';
 
 @Controller('/api/rss')
 export class RssController {
   public constructor(private readonly rssService: RssService) {}
 
-  @Post()
-  @Header('content-type', 'application/rss+xml')
-  public async generate(): Promise<XMLSerializedValue> {
-    // TODO: Save generated content to a file
-    return this.rssService.generate();
-  }
-
+  @UseFilters(new SettingsNotFoundExceptionFilter())
   @Get()
-  @Header('Cache-Control', 'none') // This content could be cached
+  @Header('Cache-Control', 'none')
   @Header('content-type', 'application/rss+xml')
-  public async getCurrent(): Promise<XMLSerializedValue> {
-    // TODO: Read from a generated file or 404 if not already generated
+  public async getXmlRss(): Promise<XMLSerializedValue> {
     return this.rssService.generate();
   }
 }

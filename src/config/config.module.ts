@@ -23,6 +23,7 @@ export class ConfigModule {
         synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
         autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
         logging: process.env.TYPEORM_LOGGING === 'true',
+        retriesNumber: Number(process.env.TYPEORM_RETRIES_NUMBER),
       }),
       new AuthConfigDto({
         // Multi line is a pain in the ass to  deal with... so for development, I use this default one

@@ -21,6 +21,7 @@ const config = new DatabaseConfigDto({
   synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
   autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
   logging: process.env.TYPEORM_LOGGING === 'true',
+  retriesNumber: 1,
 });
 
 validateSync(config);

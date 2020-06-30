@@ -22,6 +22,6 @@ export class ItunesController {
   @Put()
   @UsePipes(ValidationPipe)
   public async createOrUpdate(@Body() payload: ItunesSettingsDto) {
-    return this.itunesService.createOrUpdate(payload);
+    return this.itunesService.createOrUpdateSettings(payload);
   }
 }

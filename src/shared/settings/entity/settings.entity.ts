@@ -1,11 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { TypeSettings } from '../types/settings.type';
-
 @Entity()
-export class Settings<
-  T extends TypeSettings = Record<string, unknown>
-> extends BaseEntity {
+export class Settings<T = Record<string, unknown>> extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 

@@ -6,6 +6,7 @@ import { create } from 'xmlbuilder2';
 import { EpisodesService } from '../episodes/episodes.service';
 import { XML_BUILDER_PROVIDER } from './constant/xmlbuilder.provider.constant';
 import { ItunesService } from '../itunes/itunes.service';
+import { DateManagerService } from '../core/date/date-manager.service';
 
 @Injectable()
 export class RssService {
@@ -17,6 +18,8 @@ export class RssService {
     @Inject(EpisodesService) private readonly episodesService: EpisodesService,
     @Inject(ItunesService) private readonly itunesService: ItunesService,
     @Inject('winston') logger: Logger,
+    @Inject(DateManagerService)
+    private readonly dateManagerService: DateManagerService,
   ) {
     this.logger = logger.child({ context: RssService.name });
   }
@@ -43,7 +46,7 @@ export class RssService {
       .txt(settings.copyright)
       .up()
       .ele('lastBuildDate')
-      .txt(new Date().toUTCString())
+      .txt(this.dateManagerService.getNewDate().toUTCString())
       .up()
       .ele('atom:link')
       .att({

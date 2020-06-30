@@ -27,7 +27,7 @@ describe('RssController', () => {
   describe('root', () => {
     it('should return "my generated live mix rss"', async () => {
       rssServiceMocked.generate.mockResolvedValue('my generated live mix rss');
-      expect(await rssController.generate()).toBe('my generated live mix rss');
+      expect(await rssController.getXmlRss()).toBe('my generated live mix rss');
     });
   });
 });

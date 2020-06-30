@@ -12,11 +12,18 @@ export class ItunesService {
     private readonly settings: SettingsService<ItunesSettingsDomainModel>,
   ) {}
 
-  public async getSettings() {
+  public async getSettings(): Promise<ItunesSettingsDomainModel> {
     return this.settings.getSetting(this.settingName);
   }
 
-  public async createOrUpdate(settings: ItunesSettingsDto) {
-    return this.settings.createOrUpdate(this.settingName, settings);
+  public async createOrUpdateSettings(
+    settings: ItunesSettingsDto,
+  ): Promise<ItunesSettingsDomainModel> {
+    const itunesSettings = await this.settings.createOrUpdate(
+      this.settingName,
+      settings,
+    );
+
+    return itunesSettings.values;
   }
 }
