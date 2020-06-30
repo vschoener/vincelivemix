@@ -15,15 +15,15 @@ export class ConfigModule {
   public static forRoot(): DynamicModule {
     const configs = [
       new DatabaseConfigDto({
-        host: process.env.POSTGRES_HOST,
-        port: Number(process.env.POSTGRES_PORT),
-        user: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
+        host: process.env.POSTGRES_HOST || 'localhost',
+        port: Number(process.env.POSTGRES_PORT) || 5432,
+        user: process.env.POSTGRES_USER || 'postgres',
+        password: process.env.POSTGRES_PASSWORD || 'postgres',
+        database: process.env.POSTGRES_DB || 'vincelivemix',
         synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
         autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
         logging: process.env.TYPEORM_LOGGING === 'true',
-        retriesNumber: Number(process.env.TYPEORM_RETRIES_NUMBER),
+        retriesNumber: Number(process.env.TYPEORM_RETRIES_NUMBER) || 1,
       }),
       new AuthConfigDto({
         // Multi line is a pain in the ass to  deal with... so for development, I use this default one
@@ -56,14 +56,15 @@ BQaTCQKBgQCOSpjGM882KHjC/Mr3e8BKii1BAR1aEI0lDyAHD90ozi9sA6xAh7tM
 wccmqrtok3rcgaxkEa44lwIg/QfODmOiZ/sQbVj3srgvUEs85or1cX82cwbBXBxK
 Jg31gSVi79LcB/+W7BezGtex7Ru6rTja6DJalM0HzD5s3OsLWV2h+Q==
 -----END RSA PRIVATE KEY-----`,
-        lifetime: Number(process.env.AUTH_LIFETIME_SESSION),
-        superAdminUser: process.env.AUTH_ADMIN_USER_LOGIN,
-        superAdminPassword: process.env.AUTH_ADMIN_USER_PASSWORD,
+        lifetime: Number(process.env.AUTH_LIFETIME_SESSION) || 3600,
+        superAdminUser: process.env.AUTH_ADMIN_USER_LOGIN || 'superuser',
+        superAdminPassword:
+          process.env.AUTH_ADMIN_USER_PASSWORD || 'superpassword',
         isSuperAdminUserEnabled:
           Boolean(process.env.AUTH_ADMIN_USER_ENABLED) === true,
       }),
       new WebServerConfigDto({
-        port: Number(process.env.APP_PORT),
+        port: Number(process.env.APP_PORT) || 8080,
       }),
     ];
 

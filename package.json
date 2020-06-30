@@ -15,11 +15,12 @@
     "lint:fix": "npm rum lint -- --fix",
     "prettier": "prettier -l '{src,test}/**/*.{ts,yml,yaml,json,md}'",
     "prettier:write": "prettier --write '{src,test}/**/*.{ts,yml,yaml,json,md}'",
-    "test": "jest",
+    "test": "jest && npm run test:e2e",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "jest --coverage && npm run test:e2e:cov",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json  --runInBand",
+    "test:e2e:cov": "jest --coverage --config ./test/jest-e2e.json  --runInBand",
     "typeorm:dev": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/config/typeorm-cli.config.ts",
     "typeorm:prod": "./node_modules/typeorm/cli.js --config dist/config/typeorm-cli.config.js",
     "migration:generate": "npm run typeorm:dev migration:generate -- -n",
@@ -93,7 +94,7 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "../coverage/unit",
     "testEnvironment": "node"
   }
 }
