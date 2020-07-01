@@ -9,20 +9,17 @@ import { Episode } from './episode.entity';
 import { DateManagerService } from '../core/date/date-manager.service';
 import { loggerSettings } from '../core/logger/logger.settings';
 import { EpisodeMapper } from './mapper/episode.mapper';
-import { SettingsService } from '../shared/settings/settings.service';
-import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
-import { EpisodeSettingsDto } from './dto/episode-settings.dto';
-import { Settings } from '../shared/settings/entity/settings.entity';
 import { EpisodeStatus } from './episode.enum';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { EPISODE_CONSTRAINT } from './constants';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { SettingsService } from '../settings/settings.service';
 
 describe('EpisodeService', () => {
   const date = new Date();
   let episodeService: EpisodesService;
   let episodeRepository: jest.Mocked<Repository<Episode>>;
-  let settingsService: jest.Mocked<SettingsService<EpisodeSettingsDomainModel>>;
+  let settingsService: jest.Mocked<SettingsService>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -121,27 +118,6 @@ describe('EpisodeService', () => {
       await expect(episodeService.getHighLightEpisode()).rejects.toThrow(
         NotFoundException,
       );
-    });
-  });
-
-  describe('#createOrUpdateEpisodeSettings', () => {
-    it('should create or update episode settings', async () => {
-      const episodeSettingsDto = new EpisodeSettingsDto();
-      episodeSettingsDto.episodeId = 1;
-
-      const episodeSettings = new Settings<EpisodeSettingsDomainModel>({
-        id: 1,
-        values: {
-          highlightEpisode: 1,
-        },
-        name: 'settings',
-      });
-
-      settingsService.createOrUpdate.mockResolvedValue(episodeSettings);
-
-      expect(
-        await episodeService.createOrUpdateEpisodeSettings(episodeSettingsDto),
-      ).toEqual(episodeSettings);
     });
   });
 

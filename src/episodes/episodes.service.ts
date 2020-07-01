@@ -10,10 +10,9 @@ import { DateManagerService } from '../core/date/date-manager.service';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
 import { EpisodeMapper } from './mapper/episode.mapper';
-import { SettingsService } from '../shared/settings/settings.service';
 import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
 import { EpisodeSettingsDto } from './dto/episode-settings.dto';
-import { Settings } from '../shared/settings/entity/settings.entity';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class EpisodesService {
@@ -27,7 +26,7 @@ export class EpisodesService {
     @Inject(DateManagerService) private dateManagerService: DateManagerService,
     @Inject(EpisodeMapper) private episodeMapper: EpisodeMapper,
     @Inject(SettingsService)
-    private readonly settings: SettingsService<EpisodeSettingsDomainModel>,
+    private readonly settings: SettingsService,
     @Inject('winston') logger: Logger,
   ) {
     this.logger = logger.child({ context: EpisodesService.name });
@@ -46,7 +45,9 @@ export class EpisodesService {
 
   public async getHighLightEpisode(): Promise<Episode | null> {
     this.logger.info('Getting highlight episode...');
-    const episodeSettings = await this.settings.getSetting(this.settingsName);
+    const episodeSettings = await this.settings.getSetting<
+      EpisodeSettingsDomainModel
+    >(this.settingsName);
 
     if (!episodeSettings || !episodeSettings.highlightEpisode) {
       this.logger.error('Highlight episode not set');
@@ -57,14 +58,6 @@ export class EpisodesService {
 
     this.logger.info('Retrieving episode', { highlightEpisode });
     return this.episodeRepository.findOne(highlightEpisode);
-  }
-
-  public async createOrUpdateEpisodeSettings(
-    episodeSettingsDto: EpisodeSettingsDto,
-  ): Promise<Settings<EpisodeSettingsDomainModel>> {
-    return this.settings.createOrUpdate(this.settingsName, {
-      highlightEpisode: episodeSettingsDto.episodeId,
-    });
   }
 
   public async createEpisode(

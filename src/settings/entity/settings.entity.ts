@@ -21,3 +21,5 @@ export class Settings<T = Record<string, unknown>> extends BaseEntity {
     Object.assign(this, settings);
   }
 }
+
+export const NAME_CONSTRAINT = 'UQ_ca7857276d2a30f4dcfa0e42cd4';

@@ -6,12 +6,12 @@ import { RssModule } from './rss/rss.module';
 import { EpisodesModule } from './episodes/episodes.module';
 import { CoreModule } from './core/core.module';
 import { loggerSettings } from './core/logger/logger.settings';
-import { ItunesModule } from './itunes/itunes.module';
 import { ConfigModule } from './config/config.module';
 import { DatabaseConfigService } from './config/database-config.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { DatabaseConfigDto } from './config/dto/database-config.dto';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -26,9 +26,9 @@ import { DatabaseConfigDto } from './config/dto/database-config.dto';
     }),
     RssModule,
     EpisodesModule,
-    ItunesModule,
     AuthModule,
     UsersModule,
+    SettingsModule,
   ],
 })
 export class AppModule {}
