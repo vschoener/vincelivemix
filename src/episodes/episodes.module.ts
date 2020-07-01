@@ -6,9 +6,9 @@ import { diskStorage } from 'multer';
 import { uploadDestination } from '../config/upload.config';
 import { Episode } from './episode.entity';
 import { EpisodeMapper } from './mapper/episode.mapper';
-import { SettingsModule } from '../shared/settings/settings.module';
 import { EpisodesController } from './episodes.controller';
 import { EpisodesService } from './episodes.service';
+import { SettingsModule } from '../settings/settings.module';
 
 @Module({
   imports: [

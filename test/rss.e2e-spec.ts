@@ -2,19 +2,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { INestApplication } from '@nestjs/common';
 
 import { AppModule } from '../src/app.module';
-import { ItunesService } from '../src/itunes/itunes.service';
 import { DateManagerService } from '../src/core/date/date-manager.service';
-import { Settings } from '../src/shared/settings/entity/settings.entity';
 import { EpisodesService } from '../src/episodes/episodes.service';
 import { EpisodeStatus } from '../src/episodes/episode.enum';
+import { Settings } from '../src/settings/entity/settings.entity';
+import { SettingsService } from '../src/settings/settings.service';
 
 describe('RssController (e2e)', () => {
-  let app;
-  let itunesService: ItunesService;
+  let app: INestApplication;
+  let settingsService: SettingsService;
   let dateManagerService: DateManagerService;
-  let settings: Repository<Settings>;
+  let settingsRepository: Repository<Settings>;
   const date = new Date();
   let episodeService: EpisodesService;
 
@@ -26,16 +27,20 @@ describe('RssController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    itunesService = app.get(ItunesService);
     dateManagerService = app.get(DateManagerService);
-    settings = app.get(getRepositoryToken(Settings));
+    settingsRepository = app.get(getRepositoryToken(Settings));
     episodeService = app.get(EpisodesService);
+    settingsService = app.get(SettingsService);
 
     jest.spyOn(dateManagerService, 'getNewDate').mockReturnValue(date);
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   async function createItunesSettings() {
-    await itunesService.createOrUpdateSettings({
+    await settingsService.createOrUpdate('itunes', {
       title: 'Vince Live Mix',
       subtitle: 'Feel the vibe of the sound',
       summary: 'Summary!',
@@ -59,7 +64,7 @@ describe('RssController (e2e)', () => {
     });
 
     it('should return 200 if settings exists', async () => {
-      await settings.clear();
+      await settingsRepository.clear();
       await createItunesSettings();
 
       const response = await request(app.getHttpServer())
@@ -97,7 +102,7 @@ describe('RssController (e2e)', () => {
     });
 
     it('should return 200 with a list of episodes', async () => {
-      await settings.clear();
+      await settingsRepository.clear();
       await createItunesSettings();
 
       const episode = await episodeService.createEpisode({

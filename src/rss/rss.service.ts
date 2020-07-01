@@ -5,8 +5,9 @@ import { create } from 'xmlbuilder2';
 
 import { EpisodesService } from '../episodes/episodes.service';
 import { XML_BUILDER_PROVIDER } from './constant/xmlbuilder.provider.constant';
-import { ItunesService } from '../itunes/itunes.service';
 import { DateManagerService } from '../core/date/date-manager.service';
+import { SettingsService } from '../settings/settings.service';
+import { ItunesSettingsDomainModel } from '../settings/domain-models/itunes-settings.domain-model';
 
 @Injectable()
 export class RssService {
@@ -16,10 +17,11 @@ export class RssService {
     @Inject(XML_BUILDER_PROVIDER)
     private readonly createXmlFunction: typeof create,
     @Inject(EpisodesService) private readonly episodesService: EpisodesService,
-    @Inject(ItunesService) private readonly itunesService: ItunesService,
     @Inject('winston') logger: Logger,
     @Inject(DateManagerService)
     private readonly dateManagerService: DateManagerService,
+    @Inject(SettingsService)
+    private readonly settingsService: SettingsService,
   ) {
     this.logger = logger.child({ context: RssService.name });
   }
@@ -27,7 +29,10 @@ export class RssService {
   public async generate(): Promise<XMLSerializedValue> {
     const channelNode = this.generateToChannelNode();
 
-    const settings = await this.itunesService.getSettings();
+    console.log(this.settingsService);
+    const settings = await this.settingsService.getSetting<
+      ItunesSettingsDomainModel
+    >('itunes');
 
     channelNode
       .ele('title')
@@ -99,7 +104,9 @@ export class RssService {
   private async generateXmlItems(xmlBuilder: XMLBuilder) {
     const episodes = await this.episodesService.getPublishedEpisode();
 
-    const settings = await this.itunesService.getSettings();
+    const settings = await this.settingsService.getSetting<
+      ItunesSettingsDomainModel
+    >('itunes');
 
     this.logger.info('Generate items from', { episodes });
 

@@ -4,9 +4,6 @@ import { BadRequestException } from '@nestjs/common';
 import { EpisodesController } from './episodes.controller';
 import { EpisodesService } from './episodes.service';
 import { Episode } from './episode.entity';
-import { EpisodeSettingsDto } from './dto/episode-settings.dto';
-import { Settings } from '../shared/settings/entity/settings.entity';
-import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 
@@ -82,32 +79,6 @@ describe('Episode Controller', () => {
     expect(await controller.getEpisodeById(1)).toEqual(episode);
 
     expect(episodesServiceMock.getEpisodeById).toHaveBeenCalledWith(1);
-  });
-
-  it('#updateOrCreateSettings should create or update settings', async () => {
-    const episodeSettingsDto = new EpisodeSettingsDto();
-    episodeSettingsDto.episodeId = 1;
-
-    const episodeSettingsDomainModel = new Settings<EpisodeSettingsDomainModel>(
-      {
-        id: 1,
-        name: 'episode',
-        values: {
-          highlightEpisode: 1,
-        },
-      },
-    );
-
-    episodesServiceMock.createOrUpdateEpisodeSettings.mockResolvedValue(
-      episodeSettingsDomainModel,
-    );
-    expect(await controller.updateOrCreateSettings(episodeSettingsDto)).toEqual(
-      episodeSettingsDomainModel,
-    );
-
-    expect(
-      episodesServiceMock.createOrUpdateEpisodeSettings,
-    ).toHaveBeenCalledWith(episodeSettingsDto);
   });
 
   it('#createEpisode should create an episode', async () => {
