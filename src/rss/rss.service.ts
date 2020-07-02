@@ -29,7 +29,6 @@ export class RssService {
   public async generate(): Promise<XMLSerializedValue> {
     const channelNode = this.generateToChannelNode();
 
-    console.log(this.settingsService);
     const settings = await this.settingsService.getSetting<
       ItunesSettingsDomainModel
     >('itunes');
