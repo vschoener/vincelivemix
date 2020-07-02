@@ -72,33 +72,29 @@ describe('RssController (e2e)', () => {
         .expect('Content-Type', 'application/rss+xml; charset=utf-8')
         .expect(200);
 
-      expect(response.text).toEqual(
-        '<?xml version="1.0" encoding="utf-8"?>\n' +
-          '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n' +
-          '  <channel>\n' +
-          '    <title>Vince Live Mix</title>\n' +
-          '    <description>Summary!</description>\n' +
-          '    <link>http://www.vincelivemix.fr</link>\n' +
-          '    <language>en</language>\n' +
-          '    <copyright>℗ &amp; © 2011-2020 John Doe</copyright>\n' +
-          '    <lastBuildDate>' +
-          date.toUTCString() +
-          '</lastBuildDate>\n' +
-          '    <atom:link href="http://www.vincelivemix.fr/api/rss" rel="self" type="application/rss+xml"/>\n' +
-          '    <itunes:author>John Doe</itunes:author>\n' +
-          '    <itunes:summary>Summary!</itunes:summary>\n' +
-          '    <itunes:subtitle>Feel the vibe of the sound</itunes:subtitle>\n' +
-          '    <itunes:owner>\n' +
-          '      <itunes:name>John Doe</itunes:name>\n' +
-          '      <itunes:email>email@me.com</itunes:email>\n' +
-          '    </itunes:owner>\n' +
-          '    <itunes:explicit>clean</itunes:explicit>\n' +
-          '    <itunes:keywords>Vince live mix, electro, house, edm, dj, mixing</itunes:keywords>\n' +
-          '    <itunes:image href="http://media.vincelivemix.fr/images/podcast/Live_Mix_Song_Cover-Recovered.jpg"/>\n' +
-          '    <itunes:category text="Music"/>\n' +
-          '  </channel>\n' +
-          '</rss>',
-      );
+      expect(response.text).toEqual(`<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vince Live Mix</title>
+    <description>Summary!</description>
+    <link>http://www.vincelivemix.fr</link>
+    <language>en</language>
+    <copyright>℗ &amp; © 2011-2020 John Doe</copyright>
+    <lastBuildDate>${date.toUTCString()}</lastBuildDate>
+    <atom:link href="http://www.vincelivemix.fr/api/rss" rel="self" type="application/rss+xml"/>
+    <itunes:author>John Doe</itunes:author>
+    <itunes:summary>Summary!</itunes:summary>
+    <itunes:subtitle>Feel the vibe of the sound</itunes:subtitle>
+    <itunes:owner>
+      <itunes:name>John Doe</itunes:name>
+      <itunes:email>email@me.com</itunes:email>
+    </itunes:owner>
+    <itunes:explicit>clean</itunes:explicit>
+    <itunes:keywords>Vince live mix, electro, house, edm, dj, mixing</itunes:keywords>
+    <itunes:image href="http://media.vincelivemix.fr/images/podcast/Live_Mix_Song_Cover-Recovered.jpg"/>
+    <itunes:category text="Music"/>
+  </channel>
+</rss>`);
     });
 
     it('should return 200 with a list of episodes', async () => {
@@ -136,48 +132,41 @@ describe('RssController (e2e)', () => {
         .expect('Content-Type', 'application/rss+xml; charset=utf-8')
         .expect(200);
 
-      expect(response.text).toEqual(
-        '' +
-          '<?xml version="1.0" encoding="utf-8"?>\n' +
-          '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n' +
-          '  <channel>\n' +
-          '    <title>Vince Live Mix</title>\n' +
-          '    <description>Summary!</description>\n' +
-          '    <link>http://www.vincelivemix.fr</link>\n' +
-          '    <language>en</language>\n' +
-          '    <copyright>℗ &amp; © 2011-2020 John Doe</copyright>\n' +
-          '    <lastBuildDate>' +
-          date.toUTCString() +
-          '</lastBuildDate>\n' +
-          '    <atom:link href="http://www.vincelivemix.fr/api/rss" rel="self" type="application/rss+xml"/>\n' +
-          '    <itunes:author>John Doe</itunes:author>\n' +
-          '    <itunes:summary>Summary!</itunes:summary>\n' +
-          '    <itunes:subtitle>Feel the vibe of the sound</itunes:subtitle>\n' +
-          '    <itunes:owner>\n' +
-          '      <itunes:name>John Doe</itunes:name>\n' +
-          '      <itunes:email>email@me.com</itunes:email>\n' +
-          '    </itunes:owner>\n' +
-          '    <itunes:explicit>clean</itunes:explicit>\n' +
-          '    <itunes:keywords>Vince live mix, electro, house, edm, dj, mixing</itunes:keywords>\n' +
-          '    <itunes:image href="http://media.vincelivemix.fr/images/podcast/Live_Mix_Song_Cover-Recovered.jpg"/>\n' +
-          '    <itunes:category text="Music"/>\n' +
-          '    <item>\n' +
-          '      <title>Live mix 74</title>\n' +
-          '      <description>description</description>\n' +
-          '      <pubDate>' +
-          episode.publishedAt.toUTCString() +
-          '</pubDate>\n' +
-          '      <guid>http://media.vincelivemix.fr/audio/episodes/Vince+Live+Mix+74.mp3</guid>\n' +
-          '      <enclosure url="http://media.vincelivemix.fr/audio/episodes/Vince+Live+Mix+74.mp3" length="2589" type="audio/mp3"/>\n' +
-          '      <itunes:duration>43:09</itunes:duration>\n' +
-          '      <itunes:summary>Itunes summary</itunes:summary>\n' +
-          '      <itunes:image href="http://media.vincelivemix.fr/images/episodes/Live+mix+74.jpg"/>\n' +
-          '      <itunes:keywords>house,electro,edm,vince live mix,live mix,live mix 69,big room</itunes:keywords>\n' +
-          '      <itunes:explicit>clean</itunes:explicit>\n' +
-          '    </item>\n' +
-          '  </channel>\n' +
-          '</rss>',
-      );
+      expect(response.text).toEqual(`<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vince Live Mix</title>
+    <description>Summary!</description>
+    <link>http://www.vincelivemix.fr</link>
+    <language>en</language>
+    <copyright>℗ &amp; © 2011-2020 John Doe</copyright>
+    <lastBuildDate>${date.toUTCString()}</lastBuildDate>
+    <atom:link href="http://www.vincelivemix.fr/api/rss" rel="self" type="application/rss+xml"/>
+    <itunes:author>John Doe</itunes:author>
+    <itunes:summary>Summary!</itunes:summary>
+    <itunes:subtitle>Feel the vibe of the sound</itunes:subtitle>
+    <itunes:owner>
+      <itunes:name>John Doe</itunes:name>
+      <itunes:email>email@me.com</itunes:email>
+    </itunes:owner>
+    <itunes:explicit>clean</itunes:explicit>
+    <itunes:keywords>Vince live mix, electro, house, edm, dj, mixing</itunes:keywords>
+    <itunes:image href="http://media.vincelivemix.fr/images/podcast/Live_Mix_Song_Cover-Recovered.jpg"/>
+    <itunes:category text="Music"/>
+    <item>
+      <title>Live mix 74</title>
+      <description>description</description>
+      <pubDate>${episode.publishedAt.toUTCString()}</pubDate>
+      <guid>http://media.vincelivemix.fr/audio/episodes/Vince+Live+Mix+74.mp3</guid>
+      <enclosure url="http://media.vincelivemix.fr/audio/episodes/Vince+Live+Mix+74.mp3" length="2589" type="audio/mp3"/>
+      <itunes:duration>43:09</itunes:duration>
+      <itunes:summary>Itunes summary</itunes:summary>
+      <itunes:image href="http://media.vincelivemix.fr/images/episodes/Live+mix+74.jpg"/>
+      <itunes:keywords>house,electro,edm,vince live mix,live mix,live mix 69,big room</itunes:keywords>
+      <itunes:explicit>clean</itunes:explicit>
+    </item>
+  </channel>
+</rss>`);
     });
   });
 });
