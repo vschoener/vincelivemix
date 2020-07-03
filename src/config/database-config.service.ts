@@ -20,15 +20,15 @@ export class DatabaseConfigService {
       username: config.user,
       password: config.password,
       database: config.database,
-      entities: [__dirname + '/../**/*.entity.{ts,js}'],
       synchronize: config.synchronize,
       migrationsRun: config.autoRunMigration,
       logging: config.logging,
       logger: 'debug',
       retryAttempts: config.retriesNumber,
-      migrations: [__dirname + '/../migrations/**/*.{ts,js}'],
+      migrations: ['dist/migrations/**/*.{ts,js}'],
+      autoLoadEntities: true,
       cli: {
-        migrationsDir: 'src/migrations',
+        migrationsDir: 'dist/migrations',
       },
     };
   }
