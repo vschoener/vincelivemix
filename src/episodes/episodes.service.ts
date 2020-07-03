@@ -11,7 +11,6 @@ import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
 import { EPISODE_CONSTRAINT } from './constants';
 import { EpisodeMapper } from './mapper/episode.mapper';
 import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
-import { EpisodeSettingsDto } from './dto/episode-settings.dto';
 import { SettingsService } from '../settings/settings.service';
 
 @Injectable()

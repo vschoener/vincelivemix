@@ -13,7 +13,7 @@ export class ConfigLoaderService<T> {
     this.logger = logger.child({ context: ConfigLoaderService.name });
   }
 
-  public async load(configuration: T) {
+  public async load(configuration: T): Promise<ConfigLoaderService<T>> {
     this.logger.info(`Loading ${configuration.constructor.name}...`);
 
     await this.validate(configuration);
