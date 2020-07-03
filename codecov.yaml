@@ -1,0 +1,2 @@
+ignore:
+  - "./src/config/typeorm-cli.config.ts"  # Ignore TypeOrmConfig causing export issue to test
