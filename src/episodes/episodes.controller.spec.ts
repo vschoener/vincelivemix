@@ -5,7 +5,7 @@ import { EpisodesController } from './episodes.controller';
 import { EpisodesService } from './episodes.service';
 import { Episode } from './episode.entity';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
-import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { EpisodeDuplicatedException } from './exceptions/episode-duplicated.exception';
 
 describe('Episode Controller', () => {
   let controller: EpisodesController;
@@ -107,11 +107,11 @@ describe('Episode Controller', () => {
       'New title running with last huge electro mix';
 
     episodesServiceMock.createEpisode.mockImplementation(() => {
-      throw new EpisodeDuplicated();
+      throw new EpisodeDuplicatedException();
     });
 
     await expect(controller.createEpisode(createEpisodeDto)).rejects.toThrow(
-      BadRequestException,
+      EpisodeDuplicatedException,
     );
   });
 

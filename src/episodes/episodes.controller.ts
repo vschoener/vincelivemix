@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseFilters,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,7 +14,9 @@ import {
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
-import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { EpisodeDuplicatedException } from './exceptions/episode-duplicated.exception';
+import { SettingsNotFoundExceptionFilter } from '../settings/filters/settings-not-found-exception.filter';
+import { EpisodeDuplicatedFilter } from './filters/episode-duplicated.filter';
 
 @Controller('/api/episodes')
 export class EpisodesController {
@@ -25,6 +28,7 @@ export class EpisodesController {
   }
 
   @Get('/highlight-episode')
+  @UseFilters(new SettingsNotFoundExceptionFilter())
   public getHighlightEpisode(): Promise<Episode | null> {
     return this.episodeService.getHighLightEpisode();
   }
@@ -38,18 +42,10 @@ export class EpisodesController {
 
   @Post()
   @UsePipes(ValidationPipe)
+  @UseFilters(new EpisodeDuplicatedFilter())
   public async createEpisode(
     @Body() createEpisodeDto: CreateEpisodeDto,
   ): Promise<Episode> {
-    try {
-      return this.episodeService.createEpisode(createEpisodeDto);
-    } catch (err) {
-      switch (err.constructor) {
-        case EpisodeDuplicated:
-          throw new BadRequestException(err.message);
-      }
-
-      throw err;
-    }
+    return this.episodeService.createEpisode(createEpisodeDto);
   }
 }

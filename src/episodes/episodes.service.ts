@@ -7,7 +7,7 @@ import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
 import { EpisodeStatus } from './episode.enum';
 import { DateManagerService } from '../core/date/date-manager.service';
-import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { EpisodeDuplicatedException } from './exceptions/episode-duplicated.exception';
 import { EPISODE_CONSTRAINT } from './constants';
 import { EpisodeMapper } from './mapper/episode.mapper';
 import { EpisodeSettingsDomainModel } from './domainmodel/episode-settings.domain-model';
@@ -48,7 +48,7 @@ export class EpisodesService {
       EpisodeSettingsDomainModel
     >(this.settingsName);
 
-    if (!episodeSettings || !episodeSettings.highlightEpisode) {
+    if (!episodeSettings.highlightEpisode) {
       this.logger.error('Highlight episode not set');
       throw new NotFoundException('Highlight episode not set');
     }
@@ -56,7 +56,16 @@ export class EpisodesService {
     const { highlightEpisode } = episodeSettings;
 
     this.logger.info('Retrieving episode', { highlightEpisode });
-    return this.episodeRepository.findOne(highlightEpisode);
+    const episode = await this.episodeRepository.findOne(highlightEpisode);
+
+    if (!episode) {
+      this.logger.info('Episode does not exists', { highlightEpisode });
+      throw new NotFoundException(
+        `Episode does not exist for id: ${highlightEpisode}`,
+      );
+    }
+
+    return episode;
   }
 
   public async createEpisode(
@@ -77,7 +86,9 @@ export class EpisodesService {
     }
 
     try {
-      return this.episodeRepository.save(episode);
+      // As a reminder, if you remove the await here, the catch might not occurred because
+      // promise won't be resolved and be returned before
+      return await this.episodeRepository.save(episode);
     } catch (err) {
       if (err.constructor === QueryFailedError) {
         // TODO: Looks like the type are not up to date from this QueryFailedError
@@ -87,7 +98,7 @@ export class EpisodesService {
           this.logger.error('Episode already exists', {
             number: episode.number,
           });
-          throw new EpisodeDuplicated('Episode number already exists');
+          throw new EpisodeDuplicatedException('Episode number already exists');
         }
       }
 
