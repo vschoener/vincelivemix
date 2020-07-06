@@ -12,7 +12,7 @@ import { EpisodeMapper } from './mapper/episode.mapper';
 import { EpisodeStatus } from './episode.enum';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { EPISODE_CONSTRAINT } from './constants';
-import { EpisodeDuplicated } from './exceptions/EpisodeDuplicated';
+import { EpisodeDuplicatedException } from './exceptions/episode-duplicated.exception';
 import { SettingsService } from '../settings/settings.service';
 
 describe('EpisodeService', () => {
@@ -100,14 +100,6 @@ describe('EpisodeService', () => {
 
       expect(settingsService.getSetting).toHaveBeenCalledWith('episode');
       expect(episodeRepository.findOne).toHaveBeenCalledWith(1);
-    });
-
-    it('should throw NotFoundException if settings are not found', async () => {
-      settingsService.getSetting.mockResolvedValue(null);
-
-      await expect(episodeService.getHighLightEpisode()).rejects.toThrow(
-        NotFoundException,
-      );
     });
 
     it('should throw NotFoundException if highlightEpisode settings is not set', async () => {
@@ -234,7 +226,7 @@ describe('EpisodeService', () => {
 
       await expect(
         episodeService.createEpisode(createEpisodeDto),
-      ).rejects.toThrow(EpisodeDuplicated);
+      ).rejects.toThrow(EpisodeDuplicatedException);
     });
 
     it('should let throw any other error', async () => {

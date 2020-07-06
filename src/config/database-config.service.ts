@@ -14,6 +14,8 @@ export class DatabaseConfigService {
     config: DatabaseConfigDto,
   ): TypeOrmModuleOptions {
     return {
+      keepConnectionAlive: true,
+      name: 'default',
       type: 'postgres',
       host: config.host,
       port: config.port,

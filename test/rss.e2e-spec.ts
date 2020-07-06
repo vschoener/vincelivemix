@@ -10,12 +10,14 @@ import { EpisodesService } from '../src/episodes/episodes.service';
 import { EpisodeStatus } from '../src/episodes/episode.enum';
 import { Settings } from '../src/settings/entity/settings.entity';
 import { SettingsService } from '../src/settings/settings.service';
+import { Episode } from '../src/episodes/episode.entity';
 
 describe('RssController (e2e)', () => {
   let app: INestApplication;
   let settingsService: SettingsService;
   let dateManagerService: DateManagerService;
   let settingsRepository: Repository<Settings>;
+  let episodeRepository: Repository<Episode>;
   const date = new Date();
   let episodeService: EpisodesService;
 
@@ -29,10 +31,15 @@ describe('RssController (e2e)', () => {
 
     dateManagerService = app.get(DateManagerService);
     settingsRepository = app.get(getRepositoryToken(Settings));
+    episodeRepository = app.get(getRepositoryToken(Episode));
     episodeService = app.get(EpisodesService);
     settingsService = app.get(SettingsService);
 
     jest.spyOn(dateManagerService, 'getNewDate').mockReturnValue(date);
+  });
+
+  beforeEach(async () => {
+    await Promise.all([settingsRepository.clear(), episodeRepository.clear()]);
   });
 
   afterAll(async () => {
@@ -64,7 +71,6 @@ describe('RssController (e2e)', () => {
     });
 
     it('should return 200 if settings exists', async () => {
-      await settingsRepository.clear();
       await createItunesSettings();
 
       const response = await request(app.getHttpServer())
@@ -98,7 +104,6 @@ describe('RssController (e2e)', () => {
     });
 
     it('should return 200 with a list of episodes', async () => {
-      await settingsRepository.clear();
       await createItunesSettings();
 
       const episode = await episodeService.createEpisode({
