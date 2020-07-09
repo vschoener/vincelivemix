@@ -48,14 +48,14 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "pg": "8.2.2",
+    "pg": "8.3.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "6.6.0",
     "typeorm": "0.2.25",
     "uuid": "8.2.0",
     "winston": "3.3.3",
-    "xmlbuilder2": "2.1.6"
+    "xmlbuilder2": "2.1.7"
   },
   "devDependencies": {
     "@nestjs/cli": "7.4.1",
