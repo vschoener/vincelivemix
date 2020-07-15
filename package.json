@@ -101,6 +101,13 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage/unit",
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.ts",
+      "!<rootDir>/src/**/*.spec.ts",
+      "!<rootDir>/src/**/*.fixture.ts",
+      "!<rootDir>/src/main.ts",
+      "!<rootDir>/migrations/**"
+    ],
     "testEnvironment": "node"
   }
 }

@@ -10,7 +10,8 @@
     "<rootDir>/src/**/*.ts",
     "!<rootDir>/src/**/*.spec.ts",
     "!<rootDir>/src/**/*.fixture.ts",
-    "!<rootDir>/src/main.ts"
+    "!<rootDir>/src/main.ts",
+    "!<rootDir>/src/migrations/**"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
