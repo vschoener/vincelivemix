@@ -7,9 +7,7 @@ dotenv.config();
 import { ConfigLoaderService } from './config-loader.service';
 import { DatabaseConfigDto } from './dto/database-config.dto';
 import { WebServerConfigDto } from './dto/web-server-config.dto';
-import { AuthConfigDto } from './dto/auth-config.dto';
 import { databaseConfigDto } from './configs/database-config';
-import { authConfigDto } from './configs/auth-config';
 import { webServerConfigDto } from './configs/web-server.config';
 
 @Global()
@@ -18,7 +16,6 @@ export class ConfigModule {
   public static forRoot(): DynamicModule {
     const configs = [
       new DatabaseConfigDto(databaseConfigDto),
-      new AuthConfigDto(authConfigDto),
       new WebServerConfigDto(webServerConfigDto),
     ];
 

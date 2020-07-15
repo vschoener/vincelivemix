@@ -12,7 +12,6 @@ process.env = dotenv.parse(
   fs.readFileSync(`${__dirname}/__mock/dotenv_test.env`),
 );
 
-import { authConfigDto } from './auth-config';
 import { databaseConfigDto } from './database-config';
 import { webServerConfigDto } from './web-server.config';
 
@@ -29,18 +28,6 @@ describe('Configs without dotenv', () => {
 
   afterAll(() => {
     process.env = OLD_ENV;
-  });
-
-  describe('auth.config', () => {
-    it('should load the default config', () => {
-      expect(authConfigDto).toEqual({
-        isSuperAdminUserEnabled: true,
-        lifetime: 100,
-        privateKey: 'private_key',
-        superAdminPassword: 'Passw0rd',
-        superAdminUser: 'admin',
-      });
-    });
   });
 
   describe('database.config', () => {
