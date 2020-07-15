@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -14,7 +13,6 @@ import {
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { Episode } from './episode.entity';
-import { EpisodeDuplicatedException } from './exceptions/episode-duplicated.exception';
 import { SettingsNotFoundExceptionFilter } from '../settings/filters/settings-not-found-exception.filter';
 import { EpisodeDuplicatedFilter } from './filters/episode-duplicated.filter';
 
