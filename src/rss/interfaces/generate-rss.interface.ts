@@ -1,3 +1,0 @@
-interface GenerateRssInterface {
-  title: string;
-}
