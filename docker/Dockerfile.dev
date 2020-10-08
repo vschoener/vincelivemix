@@ -1,5 +1,5 @@
 # Dockerfile for development only
-FROM node:12.18.4
+FROM node:12.19.0
 WORKDIR /app
 
 ## Add the wait script to the image
