@@ -83,7 +83,7 @@
     "testcontainers": "^5.0.0",
     "ts-jest": "26.4.3",
     "ts-node": "9.0.0",
-    "ts-loader": "8.0.8",
+    "ts-loader": "8.0.9",
     "tsc-watch": "4.2.9",
     "tsconfig-paths": "3.9.0",
     "tslint": "6.1.3",
