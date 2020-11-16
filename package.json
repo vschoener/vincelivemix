@@ -58,7 +58,7 @@
     "xmlbuilder2": "2.4.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "7.5.2",
+    "@nestjs/cli": "7.5.3",
     "@nestjs/schematics": "7.2.2",
     "@nestjs/testing": "7.5.2",
     "@types/bcrypt": "^3.0.0",
