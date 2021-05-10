@@ -6,7 +6,7 @@ dotenv.config();
 let container: StartedTestContainer;
 
 export default async (): Promise<void> => {
-  container = await new GenericContainer('postgres', '12.3')
+  container = await new GenericContainer('postgres:12.3')
     .withExposedPorts(5432)
     .withEnv('POSTGRES_USER', process.env.POSTGRES_USER)
     .withEnv('POSTGRES_PASSWORD', process.env.POSTGRES_PASSWORD)
