@@ -18,6 +18,12 @@
       "matchDepTypes": ["devDependencies"],
       "automerge": true,
       "labels": ["dev-dependencies"]
+    },
+    {
+      "groupName": "major-dependencies",
+      "automerge": false,
+      "matchUpdateTypes": ["major"],
+      "labels": ["major-dependencies"]
     }
   ]
 }
