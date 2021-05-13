@@ -13,6 +13,17 @@
       "automerge": true,
       "groupName": "minors-update",
       "labels": ["dependencies-minors"]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true,
+      "labels": ["dev-dependencies"]
+    },
+    {
+      "groupName": "major-dependencies",
+      "automerge": false,
+      "matchUpdateTypes": ["major"],
+      "labels": ["major-dependencies"]
     }
   ]
 }
