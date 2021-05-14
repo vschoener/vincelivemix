@@ -2,7 +2,7 @@
 # Builder stage.
 # This state compile our TypeScript to get the JavaScript code
 #
-FROM node:12.19.1 AS builder
+FROM node:16.1.0 AS builder
 
 WORKDIR /usr/src/app
 
@@ -16,7 +16,7 @@ RUN npm ci --quiet && npm run build
 # This state compile get back the JavaScript code from builder stage
 # It will also install the production package only
 #
-FROM node:12.19.1-alpine as production-builder
+FROM node:16.1.0-alpine as production-builder
 
 # This cause a layer build as it brings 200 mb of data
 RUN apk --no-cache add --virtual builds-deps build-base python
@@ -27,7 +27,7 @@ ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci --quiet --only=production
 
-FROM node:12.19.1-alpine as production
+FROM node:16.1.0-alpine as production
 
 WORKDIR /app
 ENV NODE_ENV=production
