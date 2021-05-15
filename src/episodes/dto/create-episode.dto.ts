@@ -12,7 +12,7 @@ import {
   Min,
   Matches,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 import { EpisodeStatus } from '../episode.enum';
 
@@ -26,7 +26,7 @@ export class CreateEpisodeDto {
   public description: string;
 
   @IsNumber()
-  @Transform((value) => Number(value))
+  @Type(() => Number)
   public number: number;
 
   @IsIn(['published', 'draft'])

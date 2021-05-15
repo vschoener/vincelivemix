@@ -8,6 +8,8 @@ import { ConfigValidationException } from './exceptions/config-validation.except
 import { ConfigNotInitializedException } from './exceptions/config-not-initialized.exception';
 
 describe('ConfigLoaderService', () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore unkown is wrong. Need to put the right type with class used
   let configLoaderService: ConfigLoaderService<unknown>;
 
   beforeEach(async () => {
@@ -38,7 +40,7 @@ describe('ConfigLoaderService', () => {
 
     it('should throw an exception with invalid config', async () => {
       const databaseConfigDto = new DatabaseConfigDto({
-        host: (123 as unknown) as string,
+        host: 123 as unknown as string,
         retriesNumber: 100,
         autoRunMigration: false,
         logging: true,

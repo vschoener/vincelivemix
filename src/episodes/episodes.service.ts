@@ -44,9 +44,10 @@ export class EpisodesService {
 
   public async getHighLightEpisode(): Promise<Episode | null> {
     this.logger.info('Getting highlight episode...');
-    const episodeSettings = await this.settings.getSetting<
-      EpisodeSettingsDomainModel
-    >(this.settingsName);
+    const episodeSettings =
+      await this.settings.getSetting<EpisodeSettingsDomainModel>(
+        this.settingsName,
+      );
 
     if (!episodeSettings.highlightEpisode) {
       this.logger.error('Highlight episode not set');
@@ -73,9 +74,8 @@ export class EpisodesService {
   ): Promise<Episode> {
     this.logger.info('Creating episode...', createEpisodeDto);
 
-    const episode = this.episodeMapper.mapCreateEpisodeDtoToDomain(
-      createEpisodeDto,
-    );
+    const episode =
+      this.episodeMapper.mapCreateEpisodeDtoToDomain(createEpisodeDto);
 
     episode.status = createEpisodeDto.status ?? EpisodeStatus.DRAFT;
     episode.createdAt = this.dateManagerService.getNewDate();

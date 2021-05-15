@@ -29,9 +29,10 @@ export class RssService {
   public async generate(): Promise<XMLSerializedValue> {
     const channelNode = this.generateToChannelNode();
 
-    const settings = await this.settingsService.getSetting<
-      ItunesSettingsDomainModel
-    >('itunes');
+    const settings =
+      await this.settingsService.getSetting<ItunesSettingsDomainModel>(
+        'itunes',
+      );
 
     channelNode
       .ele('title')
@@ -103,9 +104,10 @@ export class RssService {
   private async generateXmlItems(xmlBuilder: XMLBuilder) {
     const episodes = await this.episodesService.getPublishedEpisode();
 
-    const settings = await this.settingsService.getSetting<
-      ItunesSettingsDomainModel
-    >('itunes');
+    const settings =
+      await this.settingsService.getSetting<ItunesSettingsDomainModel>(
+        'itunes',
+      );
 
     this.logger.info('Generate items from', { episodes });
 
