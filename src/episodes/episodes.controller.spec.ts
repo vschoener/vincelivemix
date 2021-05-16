@@ -28,9 +28,9 @@ describe('Episode Controller', () => {
     }).compile();
 
     controller = module.get<EpisodesController>(EpisodesController);
-    episodesServiceMock = module.get(EpisodesService) as jest.Mocked<
-      EpisodesService
-    >;
+    episodesServiceMock = module.get(
+      EpisodesService,
+    ) as jest.Mocked<EpisodesService>;
   });
 
   beforeEach(() => {

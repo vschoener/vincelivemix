@@ -1,7 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddUniqueSettingTableConstraint1585041218116
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public name = 'AddUniqueSettingTableConstraint1585041218116';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

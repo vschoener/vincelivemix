@@ -6,7 +6,9 @@ import { ConfigValidationException } from './exceptions/config-validation.except
 import { ConfigNotInitializedException } from './exceptions/config-not-initialized.exception';
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class ConfigLoaderService<T> {
+// TODO: validateOrReject use 1st object arfg as type, so it's hard to define a Record<> here
+// eslint-disable-next-line @typescript-eslint/ban-types
+export class ConfigLoaderService<T extends object> {
   private configuration: T;
 
   public constructor(@Inject('winston') protected logger: Logger) {

@@ -2,9 +2,7 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "../",
   "testEnvironment": "node",
-  "testMatch": [
-    "**/test/**/*.e2e-spec.ts"
-  ],
+  "testMatch": ["**/test/**/*.e2e-spec.ts"],
   "coverageDirectory": "<rootDir>/coverage/e2e",
   "collectCoverageFrom": [
     "<rootDir>/src/**/*.ts",
