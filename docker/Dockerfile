@@ -18,9 +18,6 @@ RUN npm ci --quiet && npm run build
 #
 FROM node:16.1.0-alpine as production-builder
 
-# This cause a layer build as it brings 200 mb of data
-RUN apk --no-cache add --virtual builds-deps build-base python
-
 WORKDIR /app
 ENV NODE_ENV=production
 
