@@ -9,6 +9,12 @@
       "packagePatterns": ["^@nestjs"]
     },
     {
+      "groupName": "jest-dependencies",
+      "automerge": false,
+      "labels": ["jest-dependencies"],
+      "packagePatterns": ["jest"]
+    },
+    {
       "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true,
       "groupName": "minors-update",
