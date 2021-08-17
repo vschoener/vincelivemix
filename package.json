@@ -79,7 +79,7 @@
     "jest": "27.0.6",
     "jest-environment-node": "^27.0.0",
     "prettier": "2.3.2",
-    "supertest": "6.1.5",
+    "supertest": "6.1.6",
     "testcontainers": "^7.10.0",
     "ts-jest": "27.0.5",
     "ts-loader": "9.2.5",
