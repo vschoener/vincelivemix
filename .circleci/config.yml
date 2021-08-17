@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.5.1
+  node: circleci/node@4.7.0
 jobs:
   test:
     machine: true
@@ -36,7 +36,7 @@ jobs:
     environment:
       IMAGE_NAME: sdevilcry/vincelivemix
     docker:
-      - image: cimg/node:16.5.0
+      - image: cimg/node:16.6.2
     steps:
       - setup_remote_docker:
           docker_layer_caching: false # Plan is disabled
