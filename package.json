@@ -79,7 +79,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "jest": "27.4.3",
     "jest-environment-node": "^27.0.0",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "supertest": "6.1.6",
     "testcontainers": "^7.10.0",
     "ts-jest": "27.0.7",
