@@ -18,7 +18,7 @@
       "groupName": "typescript-eslint",
       "automerge": false,
       "labels": ["typescript-eslint"],
-      "packagePatterns": ["^@typescript-eslint/eslint-plugin"]
+      "packagePatterns": ["^@typescript-eslint"]
     },
     {
       "updateTypes": ["minor", "patch", "pin", "digest"],
