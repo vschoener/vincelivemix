@@ -1,6 +1,9 @@
 {
   "labels": ["dependencies"],
   "assignees": ["vschoener"],
+  "extends": [
+    "group:nodeJs"
+  ],
   "packageRules": [
     {
       "groupName": "nestjs-dependencies",
