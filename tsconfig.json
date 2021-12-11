@@ -12,7 +12,8 @@
     "lib": ["esnext", "dom"],
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "allowJs": false
   },
   "exclude": ["node_modules", "dist"]
 }
