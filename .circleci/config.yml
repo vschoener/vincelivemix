@@ -25,9 +25,9 @@ jobs:
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.3.0
-            - run:
-                name: Wait for db
-                command: dockerize -wait tcp://$POSTGRES_HOST:$POSTGRES_PORT -timeout 1m
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://$POSTGRES_HOST:$POSTGRES_PORT -timeout 1m
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
