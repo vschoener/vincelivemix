@@ -15,6 +15,8 @@ jobs:
             - .
       - run:
           command: npm install
+      - run:
+          command: npx browserslist@latest --update-db
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
