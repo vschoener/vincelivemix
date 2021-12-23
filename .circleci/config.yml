@@ -43,8 +43,8 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - run:
-          command: npm run test:unit:cov
+#      - run:
+#          command: npm run test:unit:cov
       - run:
           command: npm run migration:run
       - run:
