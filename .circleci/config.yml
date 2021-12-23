@@ -3,12 +3,6 @@ orbs:
   node: circleci/node@5.0.0
 jobs:
   test:
-    environment:
-      POSTGRES_HOST: localhost
-      POSTGRES_USER: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: vincelivemix
     docker:
       - image: cimg/node:17.3.0
       - image: postgres:14.1-alpine
@@ -37,8 +31,8 @@ jobs:
             - .
       - run:
           command: npm install
-      - run:
-          command: npx browserslist@latest --update-db
+#      - run:
+#          command: npx browserslist@latest --update-db
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
