@@ -11,7 +11,7 @@ jobs:
       POSTGRES_DB: vincelivemix
     docker:
       - image: cimg/node:17.3.0
-      - image: postgres:14.1-alpine
+      - image: postgres:14.1-alpine-ram
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
@@ -44,7 +44,11 @@ jobs:
           paths:
             - node_modules
       - run:
-          command: npm run test:cov
+          command: npm run test:unit:cov
+      - run:
+          command: npm run migration:run
+      - run:
+          command: npm run test:e2e:cov
       - run:
           name: codecov
           command: bash <(curl -s https://codecov.io/bash)
