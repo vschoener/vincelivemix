@@ -16,4 +16,6 @@ const config = new DatabaseConfigDto(databaseConfigDto);
 
 validateSync(config);
 
+console.log(config)
+
 export = DatabaseConfigService.getTypeORMConfig(config);
