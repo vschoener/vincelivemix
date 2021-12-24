@@ -34,14 +34,11 @@ describe('Configs without dotenv', () => {
     it('should load the default config', () => {
       expect(databaseConfigDto).toEqual({
         autoRunMigration: true,
-        database: 'db_test',
-        host: 'postgres',
         logging: true,
-        password: 'postgres',
-        port: 9999,
         retriesNumber: 10,
         synchronize: true,
-        user: 'postgres',
+        type: 'postgres',
+        url: 'postgres://postgres:postgres@postgres:5432/vincelivemix_mock_test'
       });
     });
   });

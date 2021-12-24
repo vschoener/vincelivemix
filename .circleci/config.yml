@@ -3,18 +3,28 @@ orbs:
   node: circleci/node@5.0.0
 jobs:
   test:
-    machine: true
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix
+    docker:
+      - image: cimg/node:17.3.0
+      - image: postgres:14.1-alpine
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: vincelivemix
     steps:
       - checkout
       - run:
-          name: 'Install Project Node'
-          command: |
-            set +x
-            source ~/.bashrc
-
-            nvm install 17.2.0
-            NODE_DIR=$(dirname $(which node))
-            echo "export PATH=$NODE_DIR:\$PATH" >> $BASH_ENV
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
@@ -28,7 +38,11 @@ jobs:
           paths:
             - node_modules
       - run:
-          command: npm run test:cov
+          command: npm run test:unit:cov
+      - run:
+          command: npm run migration:run
+      - run:
+          command: npm run test:e2e:cov
       - run:
           name: codecov
           command: bash <(curl -s https://codecov.io/bash)

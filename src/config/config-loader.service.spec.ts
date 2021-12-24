@@ -24,15 +24,12 @@ describe('ConfigLoaderService', () => {
   describe('load', () => {
     it('should load a validated config', async () => {
       const databaseConfigDto = new DatabaseConfigDto({
-        host: 'localhost',
         retriesNumber: 100,
         autoRunMigration: false,
         logging: true,
-        database: 'testing',
-        password: 'crypted',
-        port: 1337,
         synchronize: true,
-        user: 'root',
+        type: 'postgres',
+        url: 'postgres_url'
       });
 
       await configLoaderService.load(databaseConfigDto);
@@ -40,15 +37,12 @@ describe('ConfigLoaderService', () => {
 
     it('should throw an exception with invalid config', async () => {
       const databaseConfigDto = new DatabaseConfigDto({
-        host: 123 as unknown as string,
         retriesNumber: 100,
         autoRunMigration: false,
         logging: true,
-        database: 'testing',
-        password: 'crypted',
-        port: 1337,
         synchronize: true,
-        user: 'root',
+        type: 'postgres',
+        url: 1 as unknown as string
       });
 
       await expect(
@@ -62,15 +56,12 @@ describe('ConfigLoaderService', () => {
   describe('get', () => {
     it('should return the config', async () => {
       const databaseConfigDto = new DatabaseConfigDto({
-        host: 'localhost',
         retriesNumber: 100,
         autoRunMigration: false,
         logging: true,
-        database: 'testing',
-        password: 'crypted',
-        port: 1337,
         synchronize: true,
-        user: 'root',
+        type: 'postgres',
+        url: 'postgres_url'
       });
 
       expect((await configLoaderService.load(databaseConfigDto)).get()).toEqual(

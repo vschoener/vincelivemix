@@ -2,3 +2,6 @@
 dist
 coverage
 docker
+.vscode
+.circleci
+node_modules

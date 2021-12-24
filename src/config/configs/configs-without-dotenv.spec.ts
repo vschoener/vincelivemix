@@ -17,14 +17,11 @@ describe('Configs without dotenv', () => {
     it('should load the default config', () => {
       expect(databaseConfigDto).toEqual({
         autoRunMigration: false,
-        database: 'vincelivemix',
-        host: 'localhost',
         logging: false,
-        password: 'postgres',
-        port: 5432,
         retriesNumber: 1,
         synchronize: false,
-        user: 'postgres',
+        type: 'postgres',
+        url: undefined
       });
     });
   });
