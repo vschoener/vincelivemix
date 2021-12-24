@@ -21,7 +21,7 @@ describe('Configs without dotenv', () => {
         retriesNumber: 1,
         synchronize: false,
         type: 'postgres',
-        url: 'postgres://postgres:postgres@postgres:5432/vincelivemix_mock_tests'
+        url: undefined
       });
     });
   });
