@@ -3,16 +3,18 @@ orbs:
   node: circleci/node@5.0.0
 jobs:
   test:
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix
     docker:
       - image: cimg/node:17.3.0
-      - image: cimg/postgres:14.0
+      - image: postgres:14.1-alpine
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
         environment:
-          POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: vincelivemix
     steps:
       - checkout
       - run:
@@ -22,7 +24,7 @@ jobs:
             DOCKERIZE_VERSION: v0.3.0
       - run:
           name: Wait for db
-          command: dockerize -wait tcp://$POSTGRES_HOST:$POSTGRES_PORT -timeout 1m
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:

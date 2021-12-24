@@ -2,19 +2,10 @@ import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class DatabaseConfigDto {
   @IsString()
-  public host: string;
-
-  @IsNumber()
-  public port: number;
+  public type = 'postgres';
 
   @IsString()
-  public user: string;
-
-  @IsString()
-  public password: string;
-
-  @IsString()
-  public database: string;
+  public url: string;
 
   @IsBoolean()
   public synchronize: boolean;
