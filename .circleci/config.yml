@@ -4,7 +4,7 @@ orbs:
 jobs:
   test:
     environment:
-      DATABASE_URL: postgres://postgres:2(u]PQCzPpcU_{#@@localhost:5432/vincelivemix
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix
     docker:
       - image: cimg/node:17.3.0
       - image: postgres:14.1-alpine
