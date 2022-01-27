@@ -28,6 +28,12 @@ export class DatabaseConfigService {
       cli: {
         migrationsDir: 'dist/migrations',
       },
+      ssl: config.ssl,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
     };
   }
 }

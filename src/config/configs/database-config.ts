@@ -7,4 +7,5 @@ export const databaseConfigDto: DatabaseConfigDto = {
   autoRunMigration: process.env.TYPEORM_AUTO_RUN_MIGRATION === 'true',
   logging: process.env.TYPEORM_LOGGING === 'true',
   retriesNumber: Number(process.env.TYPEORM_RETRIES_NUMBER) || 1,
+  ssl: process.env.DATABASE_SSL_CONNECTION === 'true',
 };

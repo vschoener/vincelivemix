@@ -19,6 +19,9 @@ export class DatabaseConfigDto {
   @IsNumber()
   public retriesNumber: number;
 
+  @IsBoolean()
+  public ssl: boolean;
+
   public constructor(configDatabase: Partial<DatabaseConfigDto> = {}) {
     Object.assign(this, configDatabase);
   }
