@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "vincelivemix-vercel",
+    "name": "vincelivemix-vercel-test",
     "builds": [
         {
             "src": "src/main.ts",
