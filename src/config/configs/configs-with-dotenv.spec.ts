@@ -38,7 +38,7 @@ describe('Configs without dotenv', () => {
         retriesNumber: 10,
         synchronize: true,
         type: 'postgres',
-        url: 'postgres://postgres:postgres@postgres:5432/vincelivemix_mock_test'
+        url: 'postgres://postgres:postgres@postgres:5432/vincelivemix_mock_test',
       });
     });
   });

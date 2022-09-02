@@ -31,9 +31,9 @@ export class DatabaseConfigService {
       ssl: config.ssl,
       extra: {
         ssl: {
-          rejectUnauthorized: false
-        }
-      }
+          rejectUnauthorized: false,
+        },
+      },
     };
   }
 }

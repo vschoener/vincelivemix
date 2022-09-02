@@ -21,7 +21,7 @@ describe('Configs without dotenv', () => {
         retriesNumber: 1,
         synchronize: false,
         type: 'postgres',
-        url: undefined
+        url: undefined,
       });
     });
   });

@@ -10,7 +10,7 @@ describe('DatabaseConfigService', () => {
         logging: true,
         synchronize: true,
         type: 'postgres',
-        url: 'postgres_url'
+        url: 'postgres_url',
       });
 
       expect(DatabaseConfigService.getTypeORMConfig(databaseConfigDto)).toEqual(
@@ -28,7 +28,7 @@ describe('DatabaseConfigService', () => {
           retryAttempts: 100,
           synchronize: true,
           type: 'postgres',
-          url: 'postgres_url'
+          url: 'postgres_url',
         },
       );
     });

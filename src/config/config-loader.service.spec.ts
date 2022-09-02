@@ -29,7 +29,7 @@ describe('ConfigLoaderService', () => {
         logging: true,
         synchronize: true,
         type: 'postgres',
-        url: 'postgres_url'
+        url: 'postgres_url',
       });
 
       await configLoaderService.load(databaseConfigDto);
@@ -42,7 +42,7 @@ describe('ConfigLoaderService', () => {
         logging: true,
         synchronize: true,
         type: 'postgres',
-        url: 1 as unknown as string
+        url: 1 as unknown as string,
       });
 
       await expect(
@@ -61,7 +61,7 @@ describe('ConfigLoaderService', () => {
         logging: true,
         synchronize: true,
         type: 'postgres',
-        url: 'postgres_url'
+        url: 'postgres_url',
       });
 
       expect((await configLoaderService.load(databaseConfigDto)).get()).toEqual(
