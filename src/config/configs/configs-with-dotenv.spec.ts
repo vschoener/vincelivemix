@@ -39,6 +39,7 @@ describe('Configs without dotenv', () => {
         synchronize: true,
         type: 'postgres',
         url: 'postgres://postgres:postgres@postgres:5432/vincelivemix_mock_test',
+        ssl: false,
       });
     });
   });
@@ -46,7 +47,7 @@ describe('Configs without dotenv', () => {
   describe('web-server.config', () => {
     it('should load the default config', () => {
       expect(webServerConfigDto).toEqual({
-        port: 8888,
+        port: 8080,
       });
     });
   });
