@@ -22,6 +22,7 @@ describe('Configs without dotenv', () => {
         synchronize: false,
         type: 'postgres',
         url: undefined,
+        ssl: false,
       });
     });
   });

@@ -19,6 +19,11 @@ describe('DatabaseConfigService', () => {
           cli: {
             migrationsDir: 'dist/migrations',
           },
+          extra: {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          },
           keepConnectionAlive: true,
           logger: 'debug',
           logging: true,
