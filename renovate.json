@@ -8,8 +8,8 @@
     {
       "groupName": "nestjs-dependencies",
       "automerge": false,
-      "labels": ["nestjs-core"],
-      "packagePatterns": ["^@nestjs"]
+      "labels": ["next"],
+      "packagePatterns": ["^@next"]
     },
     {
       "groupName": "jest-dependencies",
