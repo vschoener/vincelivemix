@@ -227,21 +227,21 @@ describe('EpisodeController (e2e)', () => {
         .expect(400)
         .expect({
           statusCode: 400,
-          message: [
+          message:[
             'title should not be empty',
             'title must be a string',
             'description should not be empty',
             'description must be a string',
             'number must be a number conforming to the specified constraints',
             'status must be one of the following values: published, draft',
-            'coverImage must be an URL address',
-            'audioLink must be an URL address',
+            'coverImage must be a URL address',
+            'audioLink must be a URL address',
             'durationAudioInSecond must not be less than 1',
             'durationAudioInSecond must be a number conforming to the specified constraints',
             'itunesDuration must match /^(?:(?:([01]?\\d|2[0-3]):)?([0-5]?\\d):)?([0-5]?\\d)$/ regular expression',
             'itunesSummary must be longer than or equal to 20 characters',
             'itunesSummary must be a string',
-            'itunesImageLink must be an URL address',
+            'itunesImageLink must be a URL address'
           ],
           error: 'Bad Request',
         });
