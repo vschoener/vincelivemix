@@ -32,7 +32,7 @@ describe('EpisodeService', () => {
           provide: getRepositoryToken(Episode),
           useValue: {
             save: jest.fn(),
-            findOne: jest.fn(),
+            findOneBy: jest.fn(),
             find: jest.fn(),
           },
         },
@@ -70,13 +70,13 @@ describe('EpisodeService', () => {
         audioLink: 'http://my.mp3.location',
       });
 
-      episodeRepository.findOne.mockResolvedValue(episode);
+      episodeRepository.findOneBy.mockResolvedValue(episode);
 
       expect(await episodeService.getEpisodeById(1)).toEqual(episode);
     });
 
     it('should throw NotFoundException if not found', async () => {
-      episodeRepository.findOne.mockResolvedValue(undefined);
+      episodeRepository.findOneBy.mockResolvedValue(undefined);
 
       await expect(episodeService.getEpisodeById(1)).rejects.toThrow(
         NotFoundException,
@@ -94,12 +94,12 @@ describe('EpisodeService', () => {
       });
 
       settingsService.getSetting.mockResolvedValue(episodeResult);
-      episodeRepository.findOne.mockResolvedValue(episode);
+      episodeRepository.findOneBy.mockResolvedValue(episode);
 
       expect(await episodeService.getHighLightEpisode()).toEqual(episode);
 
       expect(settingsService.getSetting).toHaveBeenCalledWith('episode');
-      expect(episodeRepository.findOne).toHaveBeenCalledWith(1);
+      expect(episodeRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
     });
 
     it('should throw NotFoundException if highlightEpisode settings is not set', async () => {

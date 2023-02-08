@@ -30,7 +30,7 @@ describe('ConfigLoaderService', () => {
         synchronize: true,
         type: 'postgres',
         url: 'postgres_url',
-        ssl: false
+        ssl: false,
       });
 
       await configLoaderService.load(databaseConfigDto);

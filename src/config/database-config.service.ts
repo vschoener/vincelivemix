@@ -25,9 +25,6 @@ export class DatabaseConfigService {
       retryAttempts: config.retriesNumber,
       migrations: ['dist/migrations/**/*.{ts,js}'],
       autoLoadEntities: true,
-      cli: {
-        migrationsDir: 'dist/migrations',
-      },
       ssl: config.ssl,
       extra: {
         ssl: {

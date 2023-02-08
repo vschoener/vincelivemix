@@ -16,9 +16,6 @@ describe('DatabaseConfigService', () => {
       expect(DatabaseConfigService.getTypeORMConfig(databaseConfigDto)).toEqual(
         {
           autoLoadEntities: true,
-          cli: {
-            migrationsDir: 'dist/migrations',
-          },
           extra: {
             ssl: {
               rejectUnauthorized: false,
@@ -31,6 +28,7 @@ describe('DatabaseConfigService', () => {
           migrationsRun: false,
           name: 'default',
           retryAttempts: 100,
+          ssl: undefined,
           synchronize: true,
           type: 'postgres',
           url: 'postgres_url',
