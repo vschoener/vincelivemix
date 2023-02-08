@@ -33,7 +33,7 @@ export class EpisodesService {
 
   public async getEpisodeById(id: number): Promise<Episode> {
     this.logger.info('Getting episode...', { id });
-    const episode = await this.episodeRepository.findOne(id);
+    const episode = await this.episodeRepository.findOneBy({ id });
 
     if (!episode) {
       throw new NotFoundException(`Episode not found ${id}`);
@@ -57,7 +57,9 @@ export class EpisodesService {
     const { highlightEpisode } = episodeSettings;
 
     this.logger.info('Retrieving episode', { highlightEpisode });
-    const episode = await this.episodeRepository.findOne(highlightEpisode);
+    const episode = await this.episodeRepository.findOneBy({
+      id: highlightEpisode,
+    });
 
     if (!episode) {
       this.logger.info('Episode does not exists', { highlightEpisode });

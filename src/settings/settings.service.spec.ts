@@ -25,7 +25,7 @@ describe('SettingsService', () => {
         {
           provide: getRepositoryToken(Settings),
           useValue: {
-            findOne: jest.fn(),
+            findOneBy: jest.fn(),
             save: jest.fn(),
             update: jest.fn(),
           },
@@ -47,19 +47,19 @@ describe('SettingsService', () => {
         },
       });
 
-      settingsRepository.findOne.mockResolvedValue(settings);
+      settingsRepository.findOneBy.mockResolvedValue(settings);
 
       expect(await settingsService.getSetting<TestSettings>('custom')).toEqual(
         settings.values,
       );
 
-      expect(settingsRepository.findOne).toHaveBeenCalledWith({
+      expect(settingsRepository.findOneBy).toHaveBeenCalledWith({
         name: 'custom',
       });
     });
 
     it('should throw SettingsNotFound is not present', async () => {
-      settingsRepository.findOne.mockResolvedValue(null);
+      settingsRepository.findOneBy.mockResolvedValue(null);
 
       await expect(
         settingsService.getSetting<TestSettings>('custom'),
@@ -101,7 +101,7 @@ describe('SettingsService', () => {
         };
       });
 
-      settingsRepository.findOne.mockResolvedValue(updatedSettings);
+      settingsRepository.findOneBy.mockResolvedValue(updatedSettings);
 
       expect(
         await settingsService.createOrUpdate('custom', updatedSettings.values),
@@ -116,7 +116,7 @@ describe('SettingsService', () => {
         },
       );
 
-      expect(settingsRepository.findOne).toHaveBeenCalledWith({
+      expect(settingsRepository.findOneBy).toHaveBeenCalledWith({
         name: 'custom',
       });
     });

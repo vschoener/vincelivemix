@@ -13,7 +13,7 @@ export class SettingsService {
   public async getSetting<T extends Record<string, unknown>>(
     name: string,
   ): Promise<T> {
-    const settings = await this.settingsRepository.findOne({
+    const settings = await this.settingsRepository.findOneBy({
       name,
     });
 
@@ -52,7 +52,7 @@ export class SettingsService {
         );
 
         return (
-          await this.settingsRepository.findOne({
+          await this.settingsRepository.findOneBy({
             name,
           })
         ).values as T;
