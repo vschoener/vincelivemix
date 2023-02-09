@@ -6,8 +6,8 @@ jobs:
     environment:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix?sslmode=disable
     docker:
-      - image: cimg/node:19.5.0
-      - image: postgres:14.1-alpine
+      - image: cimg/node:19.6.0
+      - image: postgres:14.6-alpine
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
@@ -50,7 +50,7 @@ jobs:
     environment:
       IMAGE_NAME: sdevilcry/vincelivemix
     docker:
-      - image: cimg/node:19.5.0
+      - image: cimg/node:19.6.0
     steps:
       - setup_remote_docker:
           docker_layer_caching: false # Plan is disabled
