@@ -17,3 +17,8 @@ Name the change using the `MIGRATION_NAME` arg
 ```bash
 make migrate-generate MIGRATION_NAME=NAME_IT
 ```
+
+### Architecture
+
+At beginning everything was managed inside a personal VPS but it was expensive.
+I decided to move to fly.io for the backend part and vercel for the front but it creates latencies... Will think about a new approach with 0 cost :)
