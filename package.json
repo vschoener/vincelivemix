@@ -32,11 +32,11 @@
     "migration:run:prod": "npm run typeorm:prod migration:run"
   },
   "dependencies": {
-    "@nestjs/common": "9.3.8",
-    "@nestjs/core": "9.3.8",
+    "@nestjs/common": "9.3.9",
+    "@nestjs/core": "9.3.9",
     "@nestjs/jwt": "^10.0.0",
     "@nestjs/passport": "^9.0.0",
-    "@nestjs/platform-express": "9.3.8",
+    "@nestjs/platform-express": "9.3.9",
     "@nestjs/typeorm": "9.0.1",
     "bcrypt": "^5.0.0",
     "class-transformer": "0.5.1",
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@nestjs/cli": "9.2.0",
     "@nestjs/schematics": "9.0.4",
-    "@nestjs/testing": "9.3.8",
+    "@nestjs/testing": "9.3.9",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/express-serve-static-core": "^4.17.24",
