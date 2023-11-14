@@ -7,7 +7,7 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix?sslmode=disable
     docker:
       - image: cimg/node:19.9.0
-      - image: postgres:14.9-alpine
+      - image: postgres:14.10-alpine
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
