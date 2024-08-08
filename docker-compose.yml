@@ -19,7 +19,7 @@ services:
 
   postgres:
     container_name: ${DOCKER_CONTAINER_PREFIX}.postgres
-    image: postgres:14.10
+    image: postgres:16.4
     volumes:
       - postgres_vincelivemix:/var/lib/postgresql/data
     ports:
