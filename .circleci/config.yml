@@ -1,13 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.1.0
+  node: circleci/node@5.3.0
 jobs:
   test:
     environment:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/vincelivemix?sslmode=disable
     docker:
       - image: cimg/node:19.9.0
-      - image: postgres:14.10-alpine
+      - image: postgres:14.18-alpine
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
