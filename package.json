@@ -42,7 +42,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "dotenv": "16.3.1",
-    "feed": "4.2.2",
+    "feed": "5.1.0",
     "multer": "1.4.4",
     "nest-winston": "1.9.4",
     "pg": "8.11.3",
